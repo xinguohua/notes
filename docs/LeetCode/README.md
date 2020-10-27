@@ -34,16 +34,17 @@
 
 ### 基础算法篇
 
-- [二分搜索](/docs/LeetCode/basic_algorithm/binary_search.md)
+- [二分搜索](/docs/LeetCode/basic_algorithm/binary_search.md) *
+- [二叉搜索树](/docs/LeetCode/advanced_algorithm/binary_search_tree.md)
 - [排序算法](/docs/LeetCode/basic_algorithm/sort.md)
-- [动态规划](/docs/LeetCode/basic_algorithm/dp.md)
+
 
 ### 算法思维
 
 - [递归思维](/docs/LeetCode/advanced_algorithm/recursion.md)
-- [滑动窗口思想](/docs/LeetCode/advanced_algorithm/slide_window.md)
-- [二叉搜索树](/docs/LeetCode/advanced_algorithm/binary_search_tree.md)
 - [回溯法](/docs/LeetCode/advanced_algorithm/backtrack.md)
+- [滑动窗口思想](/docs/LeetCode/advanced_algorithm/slide_window.md)
+- [动态规划](/docs/LeetCode/basic_algorithm/dp.md)
 
 ## 可视化数据结构
 这是个学习数据结构的神器，基本上包含常用数据结构的所有可视化过程哦。

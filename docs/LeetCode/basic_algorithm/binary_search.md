@@ -22,11 +22,13 @@
 ```java
 // 二分搜索最常用模板
 class Solution {
-    public int search(int[] nums, int target) {
+  public int search(int[] nums, int target) {
+        //1 初始化
         int mid, left = 0, right = nums.length - 1;
-        // 处理for循环
+        //2 循环条件：确保left和right之间有一个元素 循环终止条件区间【left,right】
         while (left + 1 < right) {
             mid = left + (right - left) / 2;
+            //3 比较中点和目标值
             if (nums[mid] == target) {
                 return mid;
             } else if (nums[mid] < target) {
@@ -35,7 +37,7 @@ class Solution {
                 right = mid - 1;
             }
         }
-        // 最后剩下两个元素，手动判断
+        //4 最后剩下两个元素，手动判断【left,right】
         if (nums[left] == target) {
             return left;
         }
@@ -58,10 +60,12 @@ class Solution {
 如果是最简单的二分搜索，不需要找第一个、最后一个位置、或者是没有重复元素，可以使用模板#1，代码更简洁
 
 ```java
-// 无重复元素搜索时，更方便
+// 二分查找简单模板：无重复元素搜索时，更方便
 class Solution {
     public int search(int[] nums, int target) {
+		//1 初始化
         int mid, left = 0, right = nums.length - 1;
+		//2 循环条件：确保left和right之间满足区间限制
         while (left <= right) {
             mid = left + (right - left) / 2;
             if (nums[mid] == target) {
@@ -88,28 +92,39 @@ class Solution {
 
 ```java
 class Solution {
+   //采用简单模板
     public int[] searchRange(int[] nums, int target) {
+        //初始化返回的解
         int[] ans = new int[]{-1, -1};
         if (nums.length == 0 || nums[0] > target) {
             return ans;
         }
-        int low = 0, high = nums.length - 1;
+        
         // 用二分查找，找到第一次出现target的位置
-        while (low <= high) {
-            int mid = low + ((high - low) >> 1);
-            if (nums[mid] >= target) {
+        //1 初始化
+        int left = 0, right = nums.length - 1;
+        //2 循环条件
+        while (left <= right) {
+            int mid = left + ((right - left) / 2);
+            //判断target
+            if (nums[mid] == target) {
+                //相等的时候不直接返回判断是否为最右边的 否则在【left,mid-1】上搜索
                 if (mid == 0 || (nums[mid] == target && nums[mid - 1] < target)) {
                     ans[0] = mid;
                     break;
+                }else {
+                    right = mid - 1;
                 }
-                else {
-                    high = mid - 1;
-                } 
-            }
-            else {
-                low = mid + 1;
+            }else if (nums[mid] < target) {
+                // 应该继续向右边找，即 [mid + 1, right] 区间里找
+                left = mid + 1;
+            } else {
+                // 此时 nums[mid] > target，应该继续向左边找，即 [left, mid - 1] 区间里找
+                right = mid - 1;
             }
         }
+
+        //判断第一个位置找到没有，找到则往下遍历
         if (ans[0] != -1 && nums[ans[0]] == target) {
             if (ans[0] == nums.length - 1) {
                 ans[1] = ans[0];
@@ -138,22 +153,40 @@ class Solution {
 
 ```java
 class Solution {
+    //使用复杂模板
     public int searchInsert(int[] nums, int target) {
-        int left = 0, right = nums.length;
-        if (right == 0) {
-            return 0;
-        }
-        while (left < right) {
-            int mid = left + ((right - left) >>> 1);
-            if (nums[mid] < target) {
-                left = mid + 1;
-            } else if (nums[mid] > target) {
-                right = mid;
-            } else {
+        
+        //1 初始化
+        int left=0,right=nums.length-1;
+        int mid=0;
+        //2 循环条件 【left,x,right】 终止【left,right】
+        while(left+1<right){
+            mid=left+(right-left)/2;
+            //3 判断target
+            if(nums[mid]==target){
                 return mid;
+            }else if(target<nums[mid]){
+                right=mid-1;
+            }else{
+                left=mid+1;
             }
         }
-        return left;
+        
+        //寻找成功
+        if(nums[left]==target){
+            return left;
+        }else if(nums[right]==target){
+            return right;
+         //大小left,right之间   
+        }else if(target>nums[left]&&target<nums[right]){
+            return left+1;
+         //比right大  
+        }else if(target>nums[right]){
+            return right+1;
+        }else{
+            //比left小
+            return left;
+        }
     }
 }
 ```
