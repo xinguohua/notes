@@ -200,25 +200,47 @@ class Solution {
 
 ```java
 class Solution {
-    public boolean searchMatrix(int[][] matrix, int target) {
-        int m = matrix.length;
-        if (m == 0) {
+    //使用简单模板
+   //两次二分查找
+    public boolean  searchMatrix(int[][] matrix, int target) {
+        if(matrix.length==0||matrix[0].length==0)
             return false;
-        }
-        int n = matrix[0].length;
-        int left = 0, right = m * n - 1;
-        int index, value;
+        //先确定在第几行
+        //1 初始化
+        int mid, left = 0, right =matrix.length - 1;
+        //2 循环条件：确保left和right之间满足区间限制
         while (left <= right) {
-            index = left + ((right - left) >>> 1);
-            value = matrix[index / n][index % n];
-            if (value == target) {
+            mid = left + (right - left) / 2;
+            if (matrix[mid][0] == target) {
                 return true;
-            } else if (value < target) {
-                left = index + 1;
+            } else if (matrix[mid][0]  < target) {
+                left = mid + 1;
             } else {
-                right = index - 1;
+                right = mid - 1;
             }
         }
+
+        int find=right;
+        //right<left
+        if (right<0)
+            find=left;
+
+        //再确定在第几列
+        //先确定在第几行
+        //1 初始化
+        int mid1, left1 = 0, right1 =matrix[0].length - 1;
+        //2 循环条件：确保left和right之间满足区间限制
+        while (left1 <= right1) {
+            mid1 = left1 + (right1 - left1) / 2;
+            if (matrix[find][mid1] == target) {
+                return true;
+            } else if (matrix[find][mid1] < target) {
+                left1 = mid1 + 1;
+            } else {
+                right1 = mid1 - 1;
+            }
+        }
+
         return false;
     }
 }
@@ -235,16 +257,21 @@ class Solution {
 
 public class Solution extends VersionControl {
     public int firstBadVersion(int n) {
-        int left = 0, right = n;
-        while (left < right) {
-            int mid = left + ((right - left) >> 1);
-            if (isBadVersion(mid)) {
-                right = mid;
-            } else {
+        //使用简单模板
+        //1 初始化
+        int mid, left = 0, right = n;
+        //2 循环条件：确保left和right之间满足区间限制
+        while (left <= right) {
+            mid = left + (right - left) / 2;
+            if (isBadVersion(mid) == false&&isBadVersion(mid+1) == true) {
+                return mid+1;
+            } else if (isBadVersion(mid)==false&&isBadVersion(mid+1) == false) {
                 left = mid + 1;
+            } else {
+                right = mid - 1;
             }
         }
-        return left;
+        return -1;
     }
 }
 ```
@@ -258,16 +285,23 @@ public class Solution extends VersionControl {
 ```java
 class Solution {
     public int findMin(int[] nums) {
-        int len = nums.length;
-        if(len == 1) {
+        //nums长度为1
+        if (nums.length==1)
             return nums[0];
-        }
-        for(int i = 1; i < len; ++i) {
-            if(nums[i] < nums[i-1]) {
-                return nums[i];
+        //比较前n-2个数
+        for (int i = 0; i < nums.length-1; i++) {
+            if (nums[i]>nums[i+1]){
+                return nums[i+1];
             }
         }
-        return nums[0];
+        //比较最后两个数
+        if (nums[nums.length-2]<nums[nums.length-1]){
+            //递增数列
+            return nums[0];
+        }else{
+            //最后一个数最小
+            return nums[nums.length-1];
+        }
     }
 }
 ```
@@ -310,6 +344,7 @@ class Solution {
 
 ```java
 class Solution {
+    //使用简单模板
     public int search(int[] nums, int target) {
         int left = 0, len = nums.length, right = len - 1;
         if (len == 0) {
@@ -370,13 +405,16 @@ class Solution {
             if (nums[mid] == target) {
                 return true;
             }
+            //变动，去掉干扰重复项
             if (nums[left] == nums[mid]) {
                 left++;
                 continue;
             }
             // 左半段
+            //nums[0]-->nums[left]
             if (nums[left] <= nums[mid]) {
                 // 左半段左部
+                //nums[0]-->nums[left]
                 if (nums[left] <= target && target < nums[mid]) {
                     right = mid - 1;
                 } else {
