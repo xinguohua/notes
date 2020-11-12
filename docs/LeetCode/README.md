@@ -35,7 +35,7 @@
 ### 基础算法篇
 
 - [二分搜索](/docs/LeetCode/basic_algorithm/binary_search.md) *
-- [二叉搜索树](/docs/LeetCode/advanced_algorithm/binary_search_tree.md)
+- [二叉搜索树](/docs/LeetCode/advanced_algorithm/binary_search_tree.md)*
 - [排序算法](/docs/LeetCode/basic_algorithm/sort.md)
 
 

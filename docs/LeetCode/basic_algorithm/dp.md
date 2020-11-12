@@ -1,5 +1,43 @@
 # 动态规划
 
+## [自己笔记](https://www.bilibili.com/video/BV1xb411e7ww?from=search&seid=17496589008725548633)
+
+### 动态规划题题目特点 && 动态规划题有几种类型？
+
+#### （一) 计数
+
+* 有多少种方式走到右下角
+
+* 有多少种方式选出k个数使得和是sum
+96. [不同的二叉搜索树](https://leetcode-cn.com/problems/unique-binary-search-trees/)
+
+#### （二) 求最大值最小值
+* 从左上角走到右下角路径的最大数字和
+* 最长上升子序列长度
+322. [零钱兑换](https://leetcode-cn.com/problems/coin-change/)
+5. [最长回文子串](https://leetcode-cn.com/problems/longest-palindromic-substring/)
+53. [最大子序和](https://leetcode-cn.com/problems/maximum-subarray/)
+
+#### （三） 求存在性
+* 取石子游戏，先手是否必胜
+* 能不能选出k个数使得和是sum
+
+### 动态规划组成部分
+
+### （一） 确定状态
+- 解动态规划需要开一个数组，数组中每个元素f[i]或者f\[i][j]代表什么
+- 确定状态需要两个意识
+	- 最后一步
+	- 子问题 
+
+### （二）转移方程
+
+### （三）初始条件和边界情况
+- 初始条件如何定义？
+	- 初始条件用转移方程算不出来 
+### （四）计算顺序
+- 一般是从小到大，用到的状态要先算出来
+
 ## 背景
 
 先从一道题目开始~

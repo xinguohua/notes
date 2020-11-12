@@ -11,6 +11,8 @@
 
 > 验证二叉搜索树
 
+**利用中序遍历（递归）-->得到递增序列判断二叉搜索树**
+
 ```java
 /**
  * Definition for a binary tree node.
@@ -22,23 +24,25 @@
  * }
  */
 class Solution {
+    //全局
+    long pre = Long.MIN_VALUE;
     public boolean isValidBST(TreeNode root) {
-        Deque<TreeNode> stack = new LinkedList<>();
-        double preVal = - Double.MAX_VALUE;
-        while (!stack.isEmpty() || root != null) {
-            while (root != null) {
-                stack.offerFirst(root);
-                root = root.left;
-            }
-            root = stack.pollFirst();
-            // 如果中序遍历得到的节点的值小于等于前一个 preVal，说明不是二叉搜索树
-            if (root.val <= preVal) {
-                return false;
-            }
-            preVal = root.val;
-            root = root.right;
+        //递归终止条件
+        if (root == null) {
+            return true;
         }
-        return true;
+        //中序遍历的一般情况
+        // 先访问左子树
+        if (!isValidBST(root.left)) {
+            return false;
+        }
+        // 访问当前节点：如果当前节点小于等于中序遍历的前一个节点，说明不满足BST，返回 false；否则继续遍历。
+        if (root.val <= pre) {
+            return false;
+        }
+        pre = root.val;
+        // 访问右子树
+        return isValidBST(root.right);
     }
 }
 ```
@@ -47,7 +51,7 @@ class Solution {
 
 > 给定二叉搜索树（BST）的根节点和要插入树中的值，将值插入二叉搜索树。 返回插入后二叉搜索树的根节点。 保证原始二叉搜索树中不存在新值。
 
-递归插入即可
+递归插入即可（连接为回溯）
 ```java
 /**
  * Definition for a binary tree node.
@@ -94,47 +98,40 @@ class Solution {
  * }
  */
 class Solution {
-    // 找到当前结点的后继结点的值，
-    private int successor(TreeNode node) {
-        node = node.right;
-        while (node.left != null) {
-            node = node.left;
-        }
-        return node.val;
-    }
-
-    // 找到当前结点的前驱结点的值，
-    private int predecessor(TreeNode node) {
-        node = node.left;
-        while (node.right != null) {
-            node = node.right;
-        }
-        return node.val;
-    }
-
     public TreeNode deleteNode(TreeNode root, int key) {
-        if (root == null) {
-            return null;
-        }
-        // 要删除的节点在右子树
-        if (key > root.val) {
-            root.right = deleteNode(root.right, key);
-        } else if (key < root.val) {
-            root.left = deleteNode(root.left, key);
-        } else { // 删除当前结点
-            // 当前结点是叶子节点，直接删除
-            if (root.right == null && root.left == null) {
-                root = null;
-            } else if (root.right != null) { // 右子树存在，删除后继结点，后继结点移到当前位置
-                root.val = successor(root);
-                root.right = deleteNode(root.right, root.val);
-            } else {
-                root.val = predecessor(root);
-                root.left = deleteNode(root.left, root.val);
-            }
-        }
+    //找不到
+    if (root == null) {
         return root;
     }
+    //找到了and删除
+    if (root.val == key) {
+        //如果叶子节点
+        if (root.left == null && root.right == null) {
+            return null;
+            //如果左右子树都不为空
+        } else if (root.left != null && root.right != null) {
+            TreeNode temp = root.right.left;
+            root.right.left = root.left;
+            TreeNode insert = root.left;
+            while (insert.right != null) {
+                insert = insert.right;
+            }
+            insert.right = temp;
+            return root.right;
+        } else if (root.left == null && root.right != null) {
+            return root.right;
+        } else if (root.left != null && root.right == null) {
+            return root.left;
+        }
+    }
+
+    if (root.val < key) {
+        root.right = deleteNode(root.right, key);
+    } else {
+        root.left = deleteNode(root.left, key);
+    }
+    return root;
+}
 }
 ```
 
