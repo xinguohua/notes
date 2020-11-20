@@ -32,17 +32,23 @@
 - [栈和队列](/docs/LeetCode/data_structure/stack_queue.md)
 - [二进制](/docs/LeetCode/data_structure/binary_op.md)
 
+[结合cyc](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E7%9B%AE%E5%BD%95.md)
 ### 基础算法篇
 
 - [二分搜索](/docs/LeetCode/basic_algorithm/binary_search.md) *
 - [二叉搜索树](/docs/LeetCode/advanced_algorithm/binary_search_tree.md)*
-- [排序算法](/docs/LeetCode/basic_algorithm/sort.md)
-
-
-### 算法思维
-
+- [排序算法](/docs/LeetCode/basic_algorithm/sort.md) *
 - [递归思维](/docs/LeetCode/advanced_algorithm/recursion.md)
 - [回溯法](/docs/LeetCode/advanced_algorithm/backtrack.md)
+
+### 高级算法篇(结合cyc)
+[结合cyc](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E7%9B%AE%E5%BD%95.md)
+- 双指针（cyc）
+- 贪心（cyc）
+- 分治（cyc）
+- 搜索（cyc）
+- 数学（cyc）
+
 - [滑动窗口思想](/docs/LeetCode/advanced_algorithm/slide_window.md)
 - [动态规划](/docs/LeetCode/basic_algorithm/dp.md)
 
