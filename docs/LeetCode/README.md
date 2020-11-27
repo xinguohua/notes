@@ -39,7 +39,7 @@
 - [二叉搜索树](/docs/LeetCode/basic_algorithm/binary_search_tree.md) *
 - [排序算法](/docs/LeetCode/basic_algorithm/sort.md) *
 - [递归思维](/docs/LeetCode/basic_algorithm/recursion.md) *
-- [回溯法](/docs/LeetCode/basic_algorithm/backtrack.md)
+- [回溯法](/docs/LeetCode/basic_algorithm/backtrack.md) *
 
 ### 高级算法篇(结合cyc)
 [结合cyc](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E7%9B%AE%E5%BD%95.md)
