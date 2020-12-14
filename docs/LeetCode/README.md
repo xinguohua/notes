@@ -27,12 +27,16 @@
 
 ### 数据结构篇
 
-- [二叉树](/docs/LeetCode/data_structure/binary_tree.md)*-----do---[cyc树](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%A0%91.md)
-- [链表](/docs/LeetCode/data_structure/linked_list.md)
-- [栈和队列](/docs/LeetCode/data_structure/stack_queue.md)
-- [二进制](/docs/LeetCode/data_structure/binary_op.md)
+- [二叉树](/docs/LeetCode/data_structure/binary_tree.md)*-----do---[cyc树-637待做](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%A0%91.md)
+- [链表](/docs/LeetCode/data_structure/linked_list.md)-----do---[cyc链表](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E9%93%BE%E8%A1%A8.md)
+- [栈和队列](/docs/LeetCode/data_structure/stack_queue.md)-----do---[cyc栈和队列](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97.md)
+- [二进制](/docs/LeetCode/data_structure/binary_op.md)-do---[cyc位运算](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E4%BD%8D%E8%BF%90%E7%AE%97.md)
 
-[结合cyc](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E7%9B%AE%E5%BD%95.md)
+- cyc补充
+	- [哈希表](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%93%88%E5%B8%8C%E8%A1%A8.md)
+	- [字符串](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%AD%97%E7%AC%A6%E4%B8%B2.md)
+	- [数组与矩阵](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%95%B0%E7%BB%84%E4%B8%8E%E7%9F%A9%E9%98%B5.md)
+	- [图](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%9B%BE.md)
 ### 基础算法篇
 
 - [二分搜索](/docs/LeetCode/basic_algorithm/binary_search.md) *
@@ -42,15 +46,17 @@
 - [回溯法](/docs/LeetCode/basic_algorithm/backtrack.md) *
 
 ### 高级算法篇(结合cyc)
-[结合cyc](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E7%9B%AE%E5%BD%95.md)
-- 双指针（cyc）
-- 贪心（cyc）
-- 分治（cyc）
-- 搜索（cyc）
-- 数学（cyc）
-
 - [滑动窗口思想](/docs/LeetCode/advanced_algorithm/slide_window.md)
 - [动态规划](/docs/LeetCode/basic_algorithm/dp.md)
+
+- [结合cyc](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E7%9B%AE%E5%BD%95.md)
+	- [双指针(cyc)](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%8F%8C%E6%8C%87%E9%92%88.md)
+	- [贪心（cyc)](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E8%B4%AA%E5%BF%83%E6%80%9D%E6%83%B3.md)
+	- [分治（cyc)](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%88%86%E6%B2%BB.md)
+	- [搜索（cyc)](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%90%9C%E7%B4%A2.md)
+	- [数学(cyc)](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%95%B0%E5%AD%A6.md)
+
+
 
 ## 可视化数据结构
 这是个学习数据结构的神器，基本上包含常用数据结构的所有可视化过程哦。
