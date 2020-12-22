@@ -47,7 +47,7 @@
 
 ### 高级算法篇(结合cyc)
 - [滑动窗口思想](/docs/LeetCode/advanced_algorithm/slide_window.md)
-- [动态规划](/docs/LeetCode/basic_algorithm/dp.md)
+- [动态规划](/docs/LeetCode/advanced_algorithm/dp.md)---do---[cyc动态规划](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92.md)
 
 - [结合cyc](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E7%9B%AE%E5%BD%95.md)
 	- [双指针(cyc)](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%8F%8C%E6%8C%87%E9%92%88.md)
