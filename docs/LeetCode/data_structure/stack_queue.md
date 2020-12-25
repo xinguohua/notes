@@ -1,6 +1,6 @@
-# 栈和队列
+# 栈及DFS和队列及BFS
 
-## 简介
+## 一 简介
 
 栈的特点是后入先出
 
@@ -10,7 +10,8 @@
 
 队列一般常用于 BFS 广度搜索，类似一层一层的搜索
 
-## Stack 栈
+## 二 Stack 栈
+### (一) 辅助单调栈
 
 [min-stack](https://leetcode-cn.com/problems/min-stack/)
 
@@ -18,30 +19,30 @@
 
 思路：用两个栈实现，一个最小栈始终保证最小值在顶部
 
+min_stack等价于遍历stack所有元素，把升序的数字都删除掉，留下一个从**栈底到栈顶降序的栈（单调栈）**。
+
 ```java
 class MinStack {
-    
-    private Deque<Integer> stack;
-    private Deque<Integer> minStack;
-    private int min;
 
     /** initialize your data structure here. */
+    LinkedList<Integer> stack;
+    LinkedList<Integer>  minstack;
     public MinStack() {
-        stack = new LinkedList<>();
-        minStack = new LinkedList<>();
-        min = Integer.MAX_VALUE;
+        stack=new LinkedList<>();
+        minstack=new LinkedList<>();
     }
-        
+    
     public void push(int x) {
-        stack.offerFirst(x);
-        min = Math.min(min, x);
-        minStack.offerFirst(min);
+        stack.addFirst(x);
+        if(minstack.isEmpty() || x <= minstack.peekFirst())
+            minstack.push(x);
     }
     
     public void pop() {
-        stack.pollFirst();
-        minStack.pollFirst();
-        min = minStack.isEmpty() ? Integer.MAX_VALUE : minStack.peekFirst();
+        int i=stack.removeFirst();
+        if(!minstack.isEmpty()&&i==minstack.peekFirst()){
+            minstack.removeFirst();
+        }
     }
     
     public int top() {
@@ -49,145 +50,187 @@ class MinStack {
     }
     
     public int getMin() {
-        return minStack.peekFirst();
+        return minstack.peekFirst();
     }
 }
-
-/**
- * Your MinStack object will be instantiated and called as such:
- * MinStack obj = new MinStack();
- * obj.push(x);
- * obj.pop();
- * int param_3 = obj.top();
- * int param_4 = obj.getMin();
- */
+}
 ```
+[716. 最大栈](https://leetcode-cn.com/problems/max-stack/)
 
+思路：维护一个单调递增栈
+```java
+class MaxStack {
+
+    /** initialize your data structure here. */
+    LinkedList<Integer> stack;
+    LinkedList<Integer>  maxstack;
+    public MaxStack() {
+        stack=new LinkedList<>();
+        maxstack=new LinkedList<>();
+    }
+    
+    public void push(int x) {
+        stack.addFirst(x);
+        if(maxstack.isEmpty() || x >= maxstack.peekFirst())
+            maxstack.push(x);
+    }
+    
+    public int pop() {
+        int i=stack.removeFirst();
+        if(!maxstack.isEmpty()&&i==maxstack.peekFirst()){
+            maxstack.removeFirst();
+        }
+        return i;
+    }
+    
+    public int top() {
+       return stack.peekFirst();
+    }
+    
+    public int peekMax() {
+
+     return maxstack.peekFirst();
+      
+    }
+    
+     public int popMax() {
+        int max = peekMax();
+        Stack<Integer> buffer = new Stack();
+        //找到删除元素
+        while (top() != max) 
+            buffer.push(pop());
+        //删除元素    
+        pop();
+        //删除元素以后的元素重新入栈
+        while (!buffer.isEmpty()) 
+            push(buffer.pop());
+        return max;
+    }
+}
+```
+### (二) 栈模拟运算
 [evaluate-reverse-polish-notation](https://leetcode-cn.com/problems/evaluate-reverse-polish-notation/)
 
 > **波兰表达式计算** > **输入:** ["2", "1", "+", "3", "*"] > **输出:** 9
 > **解释:** ((2 + 1) \* 3) = 9
 
-思路：用数组保存原来的元素，遇到+-*/取出运算，再存入结果，重复这个过程
+思路：用栈保存原来的元素，遇到+-*/取出运算，再存入结果，重复这个过程
 
 ```java
 class Solution {
-    public int evalRPN(String[] tokens) {
-        int[] nums = new int[tokens.length / 2 + 1];
-        int index = 0;
-        for (String s : tokens) {
-            switch (s) {
-                case "+": 
-                    nums[index - 2] += nums[--index];
-                    break;
-                case "-": 
-                    nums[index - 2] -= nums[--index];
-                    break;
-                case "*": 
-                    nums[index - 2] *= nums[--index];
-                    break;
-                case "/": 
-                    nums[index - 2] /= nums[--index];
-                    break;
-                default:
-                    nums[index++] = Integer.parseInt(s);
-                    break; 
+      public int evalRPN(String[] tokens) {
+        LinkedList<Integer> stack =  new LinkedList<>();
+        for(int i=0;i<tokens.length;i++){
+            if(tokens[i].equals("+")){
+                int o2=stack.removeFirst();
+                int o1=stack.removeFirst();
+                stack.addFirst(o1+o2);
+            }else if(tokens[i].equals("-")){
+                int o2=stack.removeFirst();
+                int o1=stack.removeFirst();
+                stack.addFirst(o1-o2);
+            }else if(tokens[i].equals("*")){
+                int o2=stack.removeFirst();
+                int o1=stack.removeFirst();
+                stack.addFirst(o1*o2);
+            }else if(tokens[i].equals("/")){
+                int o2=stack.removeFirst();
+                int o1=stack.removeFirst();
+                stack.addFirst(o1/o2);
+            }else{
+                stack.addFirst(Integer.parseInt(tokens[i]));
             }
         }
-        return nums[0];
+        return stack.peekFirst();
     }
 }
 ```
 
-[decode-string](https://leetcode-cn.com/problems/decode-string/)
 
-> 给定一个经过编码的字符串，返回它解码后的字符串。
-> s = "3[a]2[bc]", 返回 "aaabcbc".
-> s = "3[a2[c]]", 返回 "accaccacc".
-> s = "2[abc]3[cd]ef", 返回 "abcabccdcdcdef".
 
-思路：数字一个栈，字母一个栈，取出来计算就可以了。
+## 三 DFS深度优先（图）
 
+### [基础知识](https://blog.csdn.net/lightupworld/article/details/107186331?utm_medium=distribute.pc_aggpage_search_result.none-task-blog-2~aggregatepage~first_rank_v2~rank_v29-1-107186331.nonecase&utm_term=java%20%E5%9B%BEdfs%E6%A8%A1%E6%9D%BF&spm=1000.2123.3001.4430)
+
+### DFS 递归模板-1(类似回溯模板)
+> 判断路径是否存在，但不能找出最短路径
+> 
+> DFS 实际上是靠递归的堆栈记录⾛过的路径
+> 
+> 要找到最短路径，肯定得把⼆叉树中所有树杈都探索完才能对⽐出最短的路径有多⻓
 ```java
-class Solution {
-    public String decodeString(String s) {
-        StringBuilder res = new StringBuilder();
-        int multi = 0;
-        LinkedList<Integer> stackMulti = new LinkedList<>();
-        LinkedList<StringBuilder> stackRes = new LinkedList<>();
-        for (char c : s.toCharArray()) {
-            if (c == '[') {
-                stackMulti.addLast(multi);
-                stackRes.addLast(res);
-                multi = 0;
-                res = new StringBuilder();
-            } else if (c == ']') {
-                StringBuilder tmp = stackRes.removeLast();
-                int curMulti = stackMulti.removeLast();
-                for (int i = 0; i < curMulti; ++i) {
-                    tmp.append(res);
-                }
-                res = tmp;
-            } else if (c >= '0' && c <= '9') {
-                multi = multi * 10 + Integer.parseInt(c + "");
-            } else {
-                res.append(c);
-            }
+/*
+ * Return true if there is a path from cur to target.
+ * 如果找到路径，则返回true,并不一定是最短路径
+ */
+//
+boolean DFS(Node cur, Node target, Set<Node> visited) {
+	//递归终止条件，找到节点
+    if cur is target
+		return true;
+	//遍历cur的所有邻居节点
+    for (next : each neighbor of cur) {
+        if (next is not in visited) {
+            add next to visted;
+            if DFS(next, target, visited) == true
+				return true;
+			//不需要visited状态撤销，因为visited是参数，不是全局变量
         }
-        return res.toString();
     }
+    return false;
 }
 ```
 
-利用栈进行 BFS 非递归搜索模板
+[岛屿数量](https://leetcode-cn.com/problems/number-of-islands/solution/)
 
-```
-// 伪代码
-public class Solution 
-    boolean BFS(Node root, int target) {
-        Set<Node> visited;
-        Stack<Node> s;
-        add root to s;
-        while (s is not empty) {
-            Node cur = the top element in s;
-            return true if cur is target;
-            for (Node next : the neighbors of cur) {
-                if (next is not in visited) {
-                    add next to s;
-                    add next to visited;
+>给你一个由 '1'（陆地）和 '0'（水）组成的的二维网格，请你计算网格中岛屿的数量。
+
+>岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。
+
+思路：通过深度搜索遍历可能性（注意标记已访问元素）
+```java
+class Solution {
+    int[][] visited;
+    public int numIslands(char[][] grid) {
+        visited=new int[grid.length][grid[0].length];
+        int count=0;
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                if(grid[i][j]=='1'&&visited[i][j]==0){
+                    DFS(grid,i,j);
+                    count++;
                 }
             }
-            remove cur from s;
         }
-        return false;
+        return count;
     }
-}
-```
 
-[binary-tree-inorder-traversal](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
+    public void DFS(char[][] grid,int i,int j){
+        //递归终止条件，找到节点
+        if(grid[i][j]=='0'||visited[i][j]==1){
+		    return;
+        }else{
+            visited[i][j]=1;
+        }    
 
-> 给定一个二叉树，返回它的*中序*遍历。
-
-```java
-// 思路：通过stack 保存已经访问的元素，用于原路返回
-class Solution {
-    public List<Integer> inorderTraversal(TreeNode root) {
-        if (root == null) {
-            return new LinkedList<>();
+	    //遍历所有邻居节点
+        //上
+        if(i-1>=0){
+          DFS(grid,i-1,j);
         }
-        List<Integer> res = new LinkedList<>();
-        Deque<TreeNode> stack = new LinkedList<>();
-        TreeNode node = root;
-        while(node != null || !stack.isEmpty()) {
-            while (node != null) {
-                stack.addLast(node);
-                node = node.left;
-            }
-            node = stack.removeLast();
-            res.add(node.val);
-            node = node.right;
+        //下
+        if(i+1<=grid.length-1){
+          DFS(grid,i+1,j);
         }
-        return res;
+        //左
+        if(j-1>=0){
+          DFS(grid,i,j-1);
+        }
+        //右
+        if(j+1<=grid[0].length-1){
+          DFS(grid,i,j+1);
+        }
+    
     }
 }
 ```
@@ -221,152 +264,194 @@ class Node {
 */
 
 class Solution {
-    HashMap<Node, Node> visited = new HashMap<>();
+    HashMap<Node,Node> visited= new HashMap<>();
     public Node cloneGraph(Node node) {
-        if (node == null) {
+        //特例
+        if(node==null){
             return node;
         }
-        // 如果visited存在node的克隆结点则返回克隆结点
-        if (visited.containsKey(node)) {
+
+        //递归终止条件 如果visited存在node的克隆结点则返回克隆结点
+        if(visited.containsKey(node)){
             return visited.get(node);
         }
-        Node cloneNode = new Node(node.val, new ArrayList());
-        visited.put(node, cloneNode);
-        // 设置好cloneNode结点的克隆结点
-        for (Node neighbor : node.neighbors) {
-            // 递归node邻居结点的克隆结点
-            cloneNode.neighbors.add(cloneGraph(neighbor));
+
+        Node cloneNode=new Node(node.val);
+        visited.put(node,cloneNode);
+              
+	    //遍历node的所有邻居节点，设置好cloneNode结点的克隆结点
+        List<Node> neighbors=node.neighbors;
+        List<Node> newNeighbors=cloneNode.neighbors;
+        for(Node neighbor:neighbors){
+            Node newNeighbor=cloneGraph(neighbor);
+            newNeighbors.add(newNeighbor);
         }
+       
         return cloneNode;
     }
 }
 ```
 
-[number-of-islands](https://leetcode-cn.com/problems/number-of-islands/)
+[494. 目标和](https://leetcode-cn.com/problems/target-sum/)
 
-> 给定一个由  '1'（陆地）和 '0'（水）组成的的二维网格，计算岛屿的数量。一个岛被水包围，并且它是通过水平方向或垂直方向上相邻的陆地连接而成的。你可以假设网格的四个边均被水包围。
+> 给定一个非负整数数组，a1, a2, ..., an, 和一个目标数，S。
+> 现在你有两个符号 + 和 -。对于数组中的任意一个整数，你都可以从 + 或 -中选择一个符号添加在前面。
+> 返回可以使最终数组和为目标数 S 的所有添加符号的方法数。
 
-思路：通过深度搜索遍历可能性（注意标记已访问元素）
-
+思路 类似于回溯 DFS有状态撤回
 ```java
 class Solution {
-    int[][] move = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-    private int dfs(char[][] grid, boolean[][] visited, int x, int y, int count){
-        if(x < 0 || x >= grid.length || y < 0 || y >= grid[0].length || grid[x][y] != '1' || visited[x][y])
-            return count;
-        visited[x][y] = true;
-        for(int i = 0; i < move.length; ++i){
-            count = dfs(grid, visited, x + move[i][0], y + move[i][1], count);
-        }
-        return count+1;
+    int target;
+    int count=0;
+    public int findTargetSumWays(int[] nums, int S) {
+        target=S;
+        DFS(nums,0,0);
+        return count;
     }
-    public int numIslands(char[][] grid) {
-        if(grid.length == 0)
-            return 0;
-        int total = 0, row = grid.length, col = grid[0].length;
-        boolean[][] visited = new boolean[row][col];
-        int count = 0;
-        for(int i = 0; i < row; ++i){
-            for(int j = 0; j < col; ++j){
-                if(grid[i][j] == '1'){
-                    count = dfs(grid, visited, i, j, 0);
-                    if(count >= 1){
-                        total++;
-                    }
-                }
+
+    public void DFS(int[] nums,int sum,int index){
+        //终止条件
+        if(index==nums.length){
+            if(sum==target) {
+                count++;
             }
+            return;
         }
-        return total;
+
+        //遍历所有邻居节点+/-
+        //+
+        sum=sum+nums[index];
+        DFS(nums,sum,index+1);
+
+        //状态撤回
+        sum-=nums[index];
+        //-
+        sum=sum-nums[index];
+        DFS(nums,sum,index+1);
+
+
+    }
+}
+```
+### DFS 非递归模板-2(栈实现,类似与树的非递归中序遍历)
+[动画](https://leetcode-cn.com/leetbook/read/queue-stack/gro21/)
+
+利用栈进行 DFS 非递归搜索模板
+
+```
+// 伪代码
+boolean DFS(int root, int target) {
+    Set<Node> visited;
+    Stack<Node> s;
+    add root to s;
+    while (s is not empty) {
+        Node cur = the top element in s;
+		//循环终止条件，找到节点
+        if cur is target
+			return true;
+	    //选一方向的邻居一直入栈，cur不断深入，直到这个方向全入栈
+        for (Node next : the one direction neighbors of cur) {
+            if (next is not in visited) {
+                add next to s;
+                add next to visited;
+            }
+			cur=next;
+        }
+		//当前节点出栈
+        remove cur from s;
+		//换一个方向
+    }
+    return false;
+}
+```
+
+[binary-tree-inorder-traversal](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
+
+> 给定一个二叉树，返回它的*中序*遍历。
+
+```java
+// 思路：通过stack 保存已经访问的元素，用于原路返回
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        if (root == null) {
+            return new LinkedList<>();
+        }
+        List<Integer> res = new LinkedList<>();
+        LinkedList<TreeNode> stack = new LinkedList<>();
+        TreeNode node = root;
+        while(node != null || !stack.isEmpty()) {
+            while (node != null) {
+                stack.addLast(node);
+                node = node.left;
+            }
+            node = stack.removeLast();
+            res.add(node.val);
+            node = node.right;
+        }
+        return res;
     }
 }
 ```
 
-[largest-rectangle-in-histogram](https://leetcode-cn.com/problems/largest-rectangle-in-histogram/)
 
-> 给定 _n_ 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
-> 求在该柱状图中，能够勾勒出来的矩形的最大面积。
 
-详解见[https://leetcode-cn.com/problems/largest-rectangle-in-histogram/solution/zhu-zhuang-tu-zhong-zui-da-de-ju-xing-by-leetcode-/](https://leetcode-cn.com/problems/largest-rectangle-in-histogram/solution/zhu-zhuang-tu-zhong-zui-da-de-ju-xing-by-leetcode-/)
 
-```java
-class Solution {
-    public int largestRectangleArea(int[] heights) {
-        int len = heights.length;
-        if (len == 0) {
-            return 0;
-        }
-        if (len == 1) {
-            return heights[0];
-        }
-        int[] newHeights = new int[len + 2];
-        for (int i = 0; i < len; ++i) {
-            newHeights[i + 1] = heights[i];
-        }
-        int maxArea = 0;
-        len += 2;
-        heights = newHeights;
-        Deque<Integer> stack = new LinkedList<>();
-        stack.addFirst(0);
-        for (int i = 1; i < len; ++i) {
-            while (heights[stack.peekFirst()] > heights[i]) {
-                int height = heights[stack.removeFirst()];
-                int width = i - stack.peekFirst() - 1;
-                maxArea = Math.max(maxArea, height * width);
-            }
-            stack.addFirst(i);
-        }
-        return maxArea;
-    }
-}
-```
 
-## Queue 队列
 
-常用于 BFS 宽度优先搜索
+
+
+
+## 四 Queue 队列
+
 
 [implement-queue-using-stacks](https://leetcode-cn.com/problems/implement-queue-using-stacks/)
 
 > 使用栈实现队列
 
+思路：一个栈模拟进队列，一个栈模拟出队列
+
 ```java
 class MyQueue {
 
     /** Initialize your data structure here. */
+    LinkedList<Integer> instack;
+    LinkedList<Integer> outstack;
     public MyQueue() {
-        
+         instack=new LinkedList<>();
+         outstack=new LinkedList<>();
     }
-    
-    private Deque<Integer> in = new LinkedList<>();
-    private Deque<Integer> out = new LinkedList<>();
     
     /** Push element x to the back of queue. */
     public void push(int x) {
-        in.addFirst(x);
+        instack.addFirst(x);
     }
     
     /** Removes the element from in front of queue and returns that element. */
     public int pop() {
-        in2out();
-        return out.removeFirst();
+        if(!outstack.isEmpty()){
+            return outstack.removeFirst();
+        }
+        while(!instack.isEmpty()){
+            outstack.addFirst(instack.removeFirst());
+        }
+        return outstack.removeFirst();
     }
     
     /** Get the front element. */
     public int peek() {
-        in2out();
-        return out.peekFirst();
+         if(!outstack.isEmpty()){
+            return outstack.peekFirst();
+        }
+        while(!instack.isEmpty()){
+            outstack.addFirst(instack.removeFirst());
+        }
+        return outstack.peekFirst();
+
     }
     
     /** Returns whether the queue is empty. */
     public boolean empty() {
-        return out.isEmpty() && in.isEmpty();
-    }
-    
-    private void in2out() {
-        if (out.isEmpty()) {
-            while(!in.isEmpty()) {
-                out.addFirst(in.removeFirst());
-            }
-        }
+        return instack.isEmpty()&&outstack.isEmpty();
     }
 }
 
@@ -380,6 +465,41 @@ class MyQueue {
  */
 ```
 
+## 五 BFS（图）
+### [基础知识](https://leetcode-cn.com/leetbook/read/queue-stack/kyozi/)
+
+### BFS模板-1 (类似树层次遍历，队列实现)
+BFS 的两个主要方案：遍历或找出**最短路径**。
+
+```java
+/**
+ * 返回根节点和目标节点之间最短路径的长度。
+ */
+int BFS(Node root, Node target) {
+    Queue<Node> queue;  // 存储所有等待处理的节点
+    int step = 0;       // 从根到当前节点所需的步数，也可以理解为层数
+    // initialize
+    add root to queue;
+    // BFS
+    while (queue is not empty) {
+        step = step + 1;
+        //迭代队列中已经存在的节点，相当于对每一层的处理
+        int size = queue.size();
+        for (int i = 0; i < size; ++i) {
+            Node cur = the first node in queue;
+            if cur is target
+				return step； 
+            for (Node next : the neighbors of cur) {
+                add next to queue;
+            }
+            remove the first node(cur) from queue;
+        }
+    }
+    return -1;          // there is no path from root to target
+}
+```
+
+常用于 BFS 宽度优先搜索
 [二叉树层次遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
 
 
@@ -393,36 +513,79 @@ class MyQueue {
  *     TreeNode(int x) { val = x; }
  * }
  */
-import java.util.Queue;
 class Solution {
-    public List<List<Integer>> levelOrder(TreeNode root) {
-        List<List<Integer>> lists = new ArrayList<>();
-        if (root == null) {
-            return lists;
+   public List<List<Integer>> levelOrder(TreeNode root) {
+       
+        List<List<Integer>> result=new LinkedList<>();
+		//特例
+        if (root==null){
+            return result;
         }
-        Queue<TreeNode> queue = new LinkedList<TreeNode>();
-        queue.offer(root);
-        while (!queue.isEmpty()) {
+        LinkedList<TreeNode> queue = new LinkedList<>();
+        queue.addLast(root);
+        while (!queue.isEmpty()){
+            //该层的节点数量
             int size = queue.size();
-            List<Integer> list = new ArrayList<>();
-            // 将这一层的节点存起来
+            LinkedList<Integer> level = new LinkedList<>();
             for (int i = 0; i < size; i++) {
-                TreeNode node = queue.poll();
-                list.add(node.val);
-                if (node.left != null) {
-                    queue.add(node.left);
+                TreeNode treeNode = queue.removeFirst();
+                level.add(treeNode.val);
+                if (treeNode.left!=null){
+                    queue.addLast(treeNode.left);
                 }
-                if (node.right != null) {
-                    queue.add(node.right);
+                if (treeNode.right!=null){
+                    queue.addLast(treeNode.right);
                 }
             }
-            lists.add(list);
+            result.add(level);
         }
-        return lists;
+        return result;
     }
 }
 ```
+### BFS模板-2 (添加hash，增加访问控制)
+有时，确保我们永远不会访问一个结点两次很重要。否则，我们可能陷入无限循环。如果是这样，我们可以在上面的代码中添加一个**哈希集**来解决这个问题。
 
+**有两种情况你不需要使用哈希集：**
+* 你完全确定没有循环，例如，在树遍历中；
+* 你确实希望多次将结点添加到队列中。
+
+```java
+/**
+ * 返回根节点和目标节点之间最短路径的长度。
+ */
+int BFS(Node root, Node target) {
+    Queue<Node> queue;  // 存储所有等待处理的节点
+    Set<Node> used;     // 存储所有使用的节点*****
+    int step = 0;       // 从根到当前节点所需的步数，也可以理解为层数
+    // initialize
+    add root to queue;
+    add root to used;
+    // BFS
+    while (queue is not empty) {
+        step = step + 1;
+        // 迭代队列中已经存在的节点，相当于对每一层的处理
+        int size = queue.size();
+        for (int i = 0; i < size; ++i) {
+            Node cur = the first node in queue;
+            if cur is target
+				return step；
+            for (Node next : the neighbors of cur) {
+                if (next is not in used) {
+                    add next to queue;
+                    add next to used;
+                }
+            }
+            remove the first node（cur）from queue;
+        }
+    }
+    return -1;          // there is no path from root to target
+}
+```
+
+### 多源BFS
+* 对于 「Tree 的 BFS」 （典型的「单源 BFS])，首先把 root 节点入队，再一层一层无脑遍历就行了
+* 「图 的 BFS」 （「多源 BFS」）**必须得标志是否访问过**，省略超级节点(假想)，先将第一层入队，再开始BFS模板2。
 [01-matrix](https://leetcode-cn.com/problems/01-matrix/)
 
 > 给定一个由 0 和 1 组成的矩阵，找出每个元素到最近的 0 的距离。
@@ -431,44 +594,68 @@ class Solution {
 
 ```java
 class Solution {
+
     public int[][] updateMatrix(int[][] matrix) {
-        int row = matrix.length, col = matrix[0].length;
-        int[][] dist = new int[row][col];
-        int MAX_TEMP = Integer.MAX_VALUE / 2;
-        // 如果 (i, j) 的元素为 0，那么距离为 0，否则设置成一个很大的数
-        for (int i = 0; i < row; ++i) {
-            for (int j = 0; j < col; ++j) {
-                if (matrix[i][j] == 0) {
-                    dist[i][j] = 0;
-                } else {
-                    dist[i][j] = MAX_TEMP;
+        int[][] result=new int[matrix.length][matrix[0].length];
+        int MAX_TEMP = Integer.MAX_VALUE;
+        LinkedList<int[]> queue=new LinkedList<>();  // 存储所有等待处理的节点
+        int[][] visited =new int[matrix.length][matrix[0].length];  // 存储所有使用过的节点
+        for(int i=0;i<matrix.length;i++){
+            for(int j=0;j<matrix[0].length;j++){
+                if(matrix[i][j]==0){
+                    result[i][j]=0;
+                        //首先放入第一层--多源
+                        queue.addLast(new int[]{i,j});
+                        visited[i][j]=1;
+                }else{
+                        result[i][j]=MAX_TEMP;
                 }
             }
         }
-        // 水平向左移动 和 竖直向上移动
-        for (int i = 0; i < row; ++i) {
-            for (int j = 0; j < col; ++j) {
-                if (i - 1 >= 0) {
-                    dist[i][j] = Math.min(dist[i][j], dist[i - 1][j] + 1);
-                }
-                if (j - 1 >= 0) {
-                    dist[i][j] = Math.min(dist[i][j], dist[i][j - 1] + 1);
-                }
+
+    // BFS
+    int step=0;    
+    while (!queue.isEmpty()) {
+        step = step + 1;
+        // 迭代队列中已经存在的节点，相当于对每一层的处理
+        int size = queue.size();
+        for (int k = 0; k < size; ++k) {
+            int[] cur=queue.removeFirst();
+            int m=cur[0];
+            int n=cur[1];
+ 
+             //遍历所有邻居节点
+             //上
+            if(m-1>=0&&visited[m-1][n]==0){
+                result[m-1][n] = step;
+                visited[m-1][n]=1;
+                queue.addLast(new int[]{m-1,n});
             }
-        }
-        // 水平向右移动 和 竖直向下移动
-        for (int i = row - 1; i >= 0; --i) {
-            for (int j = col - 1; j >= 0; --j) {
-                if (i + 1 < row) {
-                    dist[i][j] = Math.min(dist[i][j], dist[i + 1][j] + 1);
-                }
-                if (j + 1 < col) {
-                    dist[i][j] = Math.min(dist[i][j], dist[i][j + 1] + 1);
-                }
+            //下
+            if(m+1<=matrix.length-1&&visited[m+1][n]==0){
+                result[m+1][n] = step;
+                visited[m+1][n]=1;
+                queue.addLast(new int[]{m+1,n});
+             }
+            //左
+            if(n-1>=0&&visited[m][n-1]==0){
+                result[m][n-1] = step;
+                visited[m][n-1]=1;
+                queue.addLast(new int[]{m,n-1});
             }
+            //右
+            if(n+1<=matrix[0].length-1&&visited[m][n+1]==0){
+             result[m][n+1] =step;
+                visited[m][n+1]=1;
+               queue.addLast(new int[]{m,n+1});
+            }    
+            
         }
-        return dist;
     }
+        return result;
+    }
+
+
 }
 ```
 
@@ -476,18 +663,8 @@ class Solution {
 
 - 熟悉栈的使用场景
   - 后出先出，保存临时值
-  - 利用栈 DFS 深度搜索
+  - 利用栈深度搜索
 - 熟悉队列的使用场景
   - 利用队列 BFS 广度搜索
 
-## 练习
 
-- [ ] [min-stack](https://leetcode-cn.com/problems/min-stack/)
-- [ ] [evaluate-reverse-polish-notation](https://leetcode-cn.com/problems/evaluate-reverse-polish-notation/)
-- [ ] [decode-string](https://leetcode-cn.com/problems/decode-string/)
-- [ ] [binary-tree-inorder-traversal](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
-- [ ] [clone-graph](https://leetcode-cn.com/problems/clone-graph/)
-- [ ] [number-of-islands](https://leetcode-cn.com/problems/number-of-islands/)
-- [ ] [largest-rectangle-in-histogram](https://leetcode-cn.com/problems/largest-rectangle-in-histogram/)
-- [ ] [implement-queue-using-stacks](https://leetcode-cn.com/problems/implement-queue-using-stacks/)
-- [ ] [01-matrix](https://leetcode-cn.com/problems/01-matrix/)
