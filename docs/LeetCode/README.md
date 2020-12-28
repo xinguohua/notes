@@ -30,6 +30,7 @@
 - [二叉树](/docs/LeetCode/data_structure/binary_tree.md)*-----do---[cyc树-637待做](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%A0%91.md)
 - [链表](/docs/LeetCode/data_structure/linked_list.md)*-----do---[cyc链表](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E9%93%BE%E8%A1%A8.md)
 - [栈及DFS和队列及BFS](/docs/LeetCode/data_structure/stack_queue.md)*-----do---[cyc栈和队列](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97.md)
+- [堆及优先队列](/docs/LeetCode/data_structure/Heap_priority queue.md)*
 - [二进制](/docs/LeetCode/data_structure/binary_op.md)-----do---[cyc位运算](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E4%BD%8D%E8%BF%90%E7%AE%97.md)
 
 - cyc补充
