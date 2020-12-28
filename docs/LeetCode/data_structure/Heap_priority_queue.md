@@ -189,7 +189,7 @@ Java中PriorityQueue通过二叉**小顶堆**（升序）实现的优先队列�
   
 
 
-## 优先队列应用
+## 二 优先队列应用
 [347. 前 K 个高频元素](https://leetcode-cn.com/problems/top-k-frequent-elements/)
 
 >给定一个非空的整数数组，返回其中出现频率前 k 高的元素。
