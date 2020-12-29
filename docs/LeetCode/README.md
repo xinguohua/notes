@@ -27,17 +27,17 @@
 
 ### 数据结构篇
 
-- [二叉树](/docs/LeetCode/data_structure/binary_tree.md)*-----do---[cyc树-637待做](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%A0%91.md)
-- [链表](/docs/LeetCode/data_structure/linked_list.md)*-----do---[cyc链表](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E9%93%BE%E8%A1%A8.md)
-- [栈及DFS和队列及BFS](/docs/LeetCode/data_structure/stack_queue.md)\*-----do---* [cyc栈和队列](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97.md)
+- [二叉树](/docs/LeetCode/data_structure/binary_tree.md)*
+- [链表](/docs/LeetCode/data_structure/linked_list.md)*
+- [栈及DFS和队列及BFS](/docs/LeetCode/data_structure/stack_queue.md)\*
 - [堆及优先队列](/docs/LeetCode//data_structure/Heap_priority_queue.md)*
-- [二进制-跳过](/docs/LeetCode/data_structure/binary_op.md)-----do---[cyc位运算](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E4%BD%8D%E8%BF%90%E7%AE%97.md)
+- [二进制-（跳过）](/docs/LeetCode/data_structure/binary_op.md)
 
-- cyc补充
-	- [哈希表](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%93%88%E5%B8%8C%E8%A1%A8.md)
-	- [字符串](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%AD%97%E7%AC%A6%E4%B8%B2.md)
-	- [数组与矩阵](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%95%B0%E7%BB%84%E4%B8%8E%E7%9F%A9%E9%98%B5.md)
-	- [图](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%9B%BE.md)
+- 补充---
+	
+	
+	
+	
 ### 基础算法篇
 
 - [二分搜索](/docs/LeetCode/basic_algorithm/binary_search.md) *
@@ -47,16 +47,49 @@
 - [回溯法](/docs/LeetCode/basic_algorithm/backtrack.md) *
 
 ### 高级算法篇(结合cyc)
-- [滑动窗口思想](/docs/LeetCode/advanced_algorithm/slide_window.md)
-- [动态规划](/docs/LeetCode/advanced_algorithm/dp.md)---do---[cyc动态规划](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92.md)
+- [滑动窗口思想*](/docs/LeetCode/advanced_algorithm/slide_window.md)
 
-- [结合cyc](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E7%9B%AE%E5%BD%95.md)
-	- [双指针(cyc)](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%8F%8C%E6%8C%87%E9%92%88.md)
-	- [贪心（cyc)](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E8%B4%AA%E5%BF%83%E6%80%9D%E6%83%B3.md)
-	- [分治（cyc)](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%88%86%E6%B2%BB.md)
-	- [搜索（cyc)](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%90%9C%E7%B4%A2.md)
-	- [数学(cyc)](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%95%B0%E5%AD%A6.md)
+- [动态规划--（最后在做）](/docs/LeetCode/advanced_algorithm/dp.md)
 
+- 补充~
+
+  
+
+
+
+
+## 计划(动态规划，位计算，数学，剑指offer最后再做)
+| [知识点](https://www.yuque.com/liweiwei1419/algo) | 复习已有笔记                                                 | [cyc](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%95%B0%E5%AD%A6.md) |
+| ------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 第 2 章 解决「排序问题」                          | [复习](/docs/LeetCode/basic_algorithm/sort.md)               |                                                              |
+| 第 3 章 二分查找算法                              | [复习](/docs/LeetCode/basic_algorithm/binary_search.md)      |                                                              |
+| 第 4 章 数组中的算法问题                          | new                                                          | [数组与矩阵](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%95%B0%E7%BB%84%E4%B8%8E%E7%9F%A9%E9%98%B5.md) |
+| 第 5 章 滑动窗口 复习                             | [复习](/docs/LeetCode/advanced_algorithm/slide_window.md)    |                                                              |
+| 第 6 章 双指针                                    | new                                                          | [双指针(cyc)](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%8F%8C%E6%8C%87%E9%92%88.md) |
+| 第 7 章 链表                                      | [复习](/docs/LeetCode/data_structure/linked_list.md)         | [cyc链表](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E9%93%BE%E8%A1%A8.md) |
+| 第 8 章 栈                                        | [复习](/docs/LeetCode/data_structure/stack_queue.md)         | [cyc栈和队列](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97.md) |
+| 第 9 章 单调栈（选学）                            | 复习                                                         |                                                              |
+| 第 10 章 队列                                     | 复习                                                         |                                                              |
+| 第 11 章 优先队列与堆                             | [复习](/docs/LeetCode//data_structure/Heap_priority_queue.md) |                                                              |
+| 第 12 章 并查集（完结）                           | new                                                          |                                                              |
+| 第 13 章 二叉树与二分搜索树                       | [复习二叉树](/docs/LeetCode/data_structure/binary_tree.md) [复习二叉搜索树](/docs/LeetCode/basic_algorithm/binary_search_tree.md) | [cyc树-637待做](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%A0%91.md) |
+| 第 14 章 分治算法 -                               | new                                                          | [分治（cyc)](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%88%86%E6%B2%BB.md) |
+| 第 15 章 回溯算法（深度优先遍历）                 | [复习递归](/docs/LeetCode/basic_algorithm/recursion.md) [复习回溯](/docs/LeetCode/basic_algorithm/backtrack.md) |                                                              |
+| 第 16 章 动态规划（跳过）                         | [跳过](/docs/LeetCode/advanced_algorithm/dp.md)              | [cyc动态规划](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92.md) |
+| 第 17 章 贪心算法-                                | new                                                          | [贪心（cyc)](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E8%B4%AA%E5%BF%83%E6%80%9D%E6%83%B3.md) |
+| 第 18 章 哈希表（查找表）                         | new                                                          | [哈希表](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%93%88%E5%B8%8C%E8%A1%A8.md) |
+| 第 19 章 图论算法-                                | new                                                          | [图](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%9B%BE.md) |
+| 第 21 章 广度优先遍历                             | 复习(栈及DFS和队列及BFS)                                     | [搜索（cyc)](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%90%9C%E7%B4%A2.md) |
+| 第 22 章 字符串-                                  | new                                                          | [字符串](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%AD%97%E7%AC%A6%E4%B8%B2.md) |
+| 第 23 章 前缀和与哈希表                           | new                                                          |                                                              |
+| 第 24 章 线段树（选学）                           | new                                                          |                                                              |
+| 第 25 章 字典树 Trie（必会）                      | new                                                          |                                                              |
+| 第 26 章 AVL 树（选学、面试几乎不考）             | new                                                          |                                                              |
+| 第 27 章 树状数组（选学、面试几乎不考）           | new                                                          |                                                              |
+| 第 28 章 红黑树、B 数、B+ 树（选学）              | new                                                          |                                                              |
+| 第 26 章 位运算(跳过)                             | [跳过](/docs/LeetCode/data_structure/binary_op.md)           | [cyc位运算](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E4%BD%8D%E8%BF%90%E7%AE%97.md) |
+| 第 27 章 数学问题(跳过)                           |                                                              | [cyc数学](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%95%B0%E5%AD%A6.md) |
+|                                                   |                                                              |                                                              |
 
 
 ## 可视化数据结构
