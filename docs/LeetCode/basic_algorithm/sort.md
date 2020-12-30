@@ -397,10 +397,226 @@ public class XinMaxHeapSort{
 
 [二叉堆](https://labuladong.gitbook.io/algo/shu-ju-jie-gou-xi-lie/er-cha-dui-xiang-jie-shi-xian-you-xian-ji-dui-lie)
 
-## 练习
+## 常考手写排序的要点
+- 快速排序(应用递归)：1）递归终止条件 只有一个元素（start>=end） 2）分区partition，返回分区中间坐标 3）左右区间递归快速排序（除去中间坐标）
+- 归并排序（自顶向下，应用递归)：1）递归终止条件 只有一个元素 2）左右区间递归归并排序（分治）3）合并merge
+- 堆排序（应用核心函数下滤）：1）构造初始堆（从第一个非叶子结点开始下滤）2） 将堆顶元素与末尾元素进行交换（交换完下滤）3) 下滤函数体`siftDownSort(int[] array,int i,int len)`
 
-- [ ] 手写快排、归并、堆排序
+## 可能考的排序
+### [选择排序(了解)](https://www.yuque.com/liweiwei1419/algo/sfqelg)
+思路：每一轮选取未排定的部分中最小的那个元素交换到未排定部分的最开头，经过若干个步骤，就能排定整个数组。即：先**选出最小**的，再选出第二小的，以此类推
+```java
+import java.util.Arrays;
 
+public class Solution {
+
+    public int[] sortArray(int[] nums) {
+        int len = nums.length;
+        // 循环不变量：[0, i) 有序，且该区间里所有元素就是最终排定的样子
+		//从数组前面选出最小的固定
+        for (int i = 0; i < len - 1; i++) {
+            // 选择区间 [i, len - 1] 里最小的元素的索引，交换到下标 i
+            int minIndex = i;
+            for (int j = i + 1; j < len; j++) {
+                if (nums[j] < nums[minIndex]) {
+                    minIndex = j;
+                }
+            }
+            swap(nums, i, minIndex);
+        }
+        return nums;
+    }
+
+    private void swap(int[] nums, int index1, int index2) {
+        int temp = nums[index1];
+        nums[index1] = nums[index2];
+        nums[index2] = temp;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {5, 2, 3, 1};
+        Solution solution = new Solution();
+        int[] res = solution.sortArray(nums);
+        System.out.println(Arrays.toString(res));
+    }
+}
+```
+- 选择排序的特点:交换次数最少
+- 选择排序的优化:选出未排定部分的最⼤值：O(N)--以空间换时间->O(logN)
+堆排序（Heap Sort）
+
+### [冒泡排序(了解)](https://www.yuque.com/liweiwei1419/algo/ilg11p)
+冒泡排序的基本思想是：反复交换相邻的，但没有按照次序排列的元素，每一轮将一个「未排定部分」**最大的元素**「冒泡」到「未排定部分」的末尾，直至整个数组有序。
+```java
+public class Solution {
+
+    // 冒泡排序（基础版）：超时
+
+    public int[] sortArray(int[] nums) {
+        int len = nums.length;
+		//从后冒泡固定最大的
+        for (int i = len - 1; i >= 0; i--) {
+            // 只要发生一次交换，就必须进行下一轮比较，
+            for (int j = 0; j < i; j++) {
+                if (nums[j] > nums[j + 1]) {
+                    swap(nums, j, j + 1);
+                }
+            }
+        }
+        return nums;
+    }
+
+    private void swap(int[] nums, int index1, int index2) {
+        int temp = nums[index1];
+        nums[index1] = nums[index2];
+        nums[index2] = temp;
+    }
+}
+```
+### [插入排序(熟悉)](https://www.yuque.com/liweiwei1419/algo/pbpdec)
+思路：每次将一个数字插入一个有序的数组（从下标1开始插入）里，成为一个长度更长的有序数组。有限次操作以后，数组整体有序。
+```java
+public class Solution {
+
+    public int[] sortArray(int[] nums) {
+        int len = nums.length;
+        // 循环不变量：将 nums[i] 插入到区间 [0, i) 使之成为有序数组
+        for (int i = 1; i < len; i++) {
+            // 先暂存这个元素，然后之前元素逐个后移，留出空位
+            int temp = nums[i];
+            int j = i;
+			//nums[j] 指示着为空将要移入的位置
+            // 注意边界 j > 0
+            while (j > 0 && nums[j - 1] > temp) {
+                nums[j] = nums[j - 1];
+                j--;
+            }
+            nums[j] = temp;
+        }
+        return nums;
+    }
+}
+```
+特点：
+- 「插入排序」可以提前终止内层循环（体现在 nums[j - 1] > temp 不满足时）；
+在数组「几乎有序」的前提下，「插入排序」的时间复杂度可以达到O(N)
+## 排序总结
+
+![排序算法总结](../images/sort.png)
+
+[排序算法稳定性分析](https://blog.csdn.net/dreamer2020/article/details/8740244)
+
+## [比较器的应用](https://www.cnblogs.com/skywang12345/p/3324788.html)
+如果比较结果为1(大于0)进行交换，其他不进行交换。
+
+### （一）数组排序 Arrays.sort(T[] a, Comparator<? super T> c)  
+根据指定比较器产生的顺序对指定对象数组进行排序。
+
+[56. 合并区间](https://leetcode-cn.com/problems/merge-intervals/)
+```java
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        //按数组下标升序排序intervals
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                //o1[0]<o2[0] 不不交换 升序
+                return o1[0]-o2[0];
+            }
+        });
+
+
+        //结果存放在ArrayList<int[]>
+        LinkedList<int[]> result= new LinkedList<>();
+        result.addLast(intervals[0]);
+
+        //遍历intervals依次两两比较（result结果与intervals比较）
+        for (int i = 1; i < intervals.length; i++) {
+            int[] compare = result.peekLast();
+            //情况1：互不相交
+            if (compare[1]<intervals[i][0]){
+                result.addLast(intervals[i]);
+            }else{
+                //情况2：一种相交
+                result.removeLast();
+                intervals[i][0]=compare[0];
+                intervals[i][1]=Math.max(intervals[i][1],compare[1]);
+                result.addLast(intervals[i]);
+            }
+        }
+        
+
+        //List-->Array
+        int[][] resultarray = result.toArray(new int[result.size()][2]);
+        return  resultarray;
+    }
+}
+```
+### （二）集合排序 Collections.sort(List<T> list, Comparator<? super T> c) 
+根据指定比较器产生的顺序对指定列表进行排序。
+
+[179. 最大数](https://leetcode-cn.com/problems/largest-number/)
+```java
+class Solution {
+    public String largestNumber(int[] nums) {
+
+        ArrayList<String> all =new ArrayList<>();
+        for (int i = 0; i < nums.length; i++) {
+            StringBuffer world=new StringBuffer();
+            if (nums[i]==0){
+                all.add("0");
+            }else{
+                while (nums[i]!=0){
+                    int k=nums[i]%10;
+                    nums[i]=nums[i]/10;
+                    //k--->char
+                    char temp=(char) ('0'+k);
+                    world.append(temp);
+                }
+                world.reverse();
+                all.add(world.toString());
+            }
+
+        }
+        //对all进行降序排序
+        Collections.sort(all,new Comparator<String>() {
+            @Override
+            public int compare(String s1, String s2) {
+                String sum1=s1+s2;
+                String sum2=s2+s1;
+                for (int i = 0; i <sum1.length() ; i++) {
+                    if (sum1.charAt(i)<sum2.charAt(i)){
+                        //交换顺序
+                        return 1;
+                    }else if(sum1.charAt(i)>sum2.charAt(i)){
+                        return -1;
+                    }
+                }
+                return 0;
+            }
+        });
+        String result ="";
+        for (int i = 0; i < all.size(); i++) {
+            result+=all.get(i);
+        }
+        int index=-1;
+        for (int i = 0; i <result.length()-1 ; i++) {
+            if (result.charAt(i)=='0'){
+                index=i;
+            }else{
+                break;
+            } 
+        }
+        String realresult=result;
+        if (index!=-1){
+            realresult= result.substring(index + 1);
+        }
+        return realresult;
+
+    }
+}
+```
+## 常考排序的题
 ### 快排的题
 [912. 排序数组](https://leetcode-cn.com/problems/sort-an-array/)
 
@@ -573,6 +789,3 @@ public int findKthLargest(int[] nums, int k) {
     }
 ```
 
-
-### 待做补充其他排序算法 以及稳定性
-### 比较器的应用
