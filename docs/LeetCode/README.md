@@ -68,7 +68,7 @@
 | [知识点](https://www.yuque.com/liweiwei1419/algo) | 复习已有笔记                                                 | [cyc](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%95%B0%E5%AD%A6.md) | 进度 |
 | ------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ---- |
 | 第 2 章 解决「排序问题」                          | [复习](/docs/LeetCode/basic_algorithm/sort.md)               |                                                              | 完成 |
-| 第 3 章 二分查找算法                              | [复习](/docs/LeetCode/basic_algorithm/binary_search.md)      |                                                              |      |
+| 第 3 章 二分查找算法                              | [复习](/docs/LeetCode/basic_algorithm/binary_search.md)      |                                                              | 完成 |
 | 第 4 章 数组中的算法问题                          | new                                                          | [数组与矩阵](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%95%B0%E7%BB%84%E4%B8%8E%E7%9F%A9%E9%98%B5.md) |      |
 | 第 5 章 滑动窗口 复习                             | [复习](/docs/LeetCode/advanced_algorithm/slide_window.md)    |                                                              |      |
 | 第 6 章 双指针                                    | new                                                          | [双指针(cyc)](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%8F%8C%E6%8C%87%E9%92%88.md) |      |

@@ -67,6 +67,7 @@ class Solution {
         int mid, left = 0, right = nums.length - 1;
 		//2 循环条件：确保left和right之间满足区间限制
         while (left <= right) {
+			// 为了防止 left + right 整形溢出，写成如下形式
             mid = left + (right - left) / 2;
             if (nums[mid] == target) {
                 return mid;
@@ -80,6 +81,92 @@ class Solution {
     }
 }
 ```
+## [补充思路2 在循环体内部排除元素（在解决复杂问题时非常有用）--利用减治思想去除mid](https://www.yuque.com/liweiwei1419/algo/feiopy)
+### 思路2的两种模板
+
+* 思路：把待搜索区间分为2部分，一部分一定不存在目标元素，另一部分可能存在目标元素
+* 要点（两个模板）：
+  * 退出循环的时候一定有 `left == right` 成立，**这一点在定位元素下标的时候极其有用**；
+  * 先考虑 `nums[mid]` 在满足什么条件下不是目标元素，确定下一轮搜索的区间。它的反面（也就是 `else` 语句的部分），就不用去考虑对应的区间是什么，直接从上一个分支的反面区间得到
+  * 中点防止溢出的写法 `int mid = left + (right - left) / 2;`
+  * 中点什么情况+1，只要看到下面 `left = mid`，因为赋值语句mid=left + (right - left) / 2,-->可能出现mid=left 这样形成死循环
+  * 退出循环以后，根据情况看是否需要对下标为 `left` 或者 `right` 的元素进行单独判断，这一步叫「**后处理**」。在有些问题中，排除掉所有不符合要求的元素以后，剩下的那 1 个元素就一定是目标元素。如果根据问题的场景，目标元素一定在搜索区间里，那么退出循环以后，可以直接返回 `left`（或者 `right`）。
+
+* **1）mid从右侧区间去除**
+
+![](../images/binarySort.png)
+
+```java
+public int search(int[] nums, int left, int right, int target) {
+    // 在区间 [left, right] 里查找目标元素
+    while (left < right) {
+        // 选择中间数时下取整
+        int mid = left + (right - left) / 2;
+        //检查mid能从搜索区间中排除么？右侧区间排除
+        if (check(mid)) {
+            // 下一轮搜索区间是 [mid + 1, right]
+            left = mid + 1;
+        } else {
+            // 下一轮搜索区间是 [left, mid]
+            right = mid;
+        }
+    }
+    // 退出循环的时候，程序只剩下一个元素没有看到，视情况，是否需要单独判断 left（或者 right）这个下标的元素是否符合题意
+}
+```
+
+* **2）mid从左侧区间去除**
+
+![](../images/binarySort1.png)
+
+```java
+public int search(int[] nums, int left, int right, int target) {
+    // 在区间 [left, right] 里查找目标元素
+    while (left < right) {
+        // 选择中间数时上取整
+        int mid = left + (right - left + 1) / 2;
+        //检查mid能从搜索区间中排除么？左侧区间排除
+        if (check(mid)) {
+            // 下一轮搜索区间是 [left, mid - 1]
+            right = mid - 1;
+        } else {
+            // 下一轮搜索区间是 [mid, right]
+            left = mid;
+        }
+    }
+    // 退出循环的时候，程序只剩下一个元素没有看到，视情况，是否需要单独判断 left（或者 right）这个下标的元素是否符合题意
+}
+```
+### 思路2 练习
+
+#### [69. x 的平方根](https://leetcode-cn.com/problems/sqrtx/)
+
+```java
+  public int mySqrt(int x) {
+        // 注意：针对特殊测试用例，例如 2147395599
+        // 要把搜索的范围设置成长整型
+        // 为了照顾到 0 把左边界设置为 0
+        long left = 0;
+        // # 为了照顾到 1 把右边界设置为 x // 2 + 1
+        long right = x / 2 + 1;
+        while (left < right) {
+            // 注意：这里一定取右中位数，如果取左中位数，代码会进入死循环
+            // long mid = left + (right - left + 1) / 2;
+            long mid = (left + right + 1) >>> 1;
+            long square = mid * mid;
+            if (square > x) {
+                right = mid - 1;
+            } else {
+                left = mid;
+            }
+        }
+        // 因为一定存在，因此无需后处理
+        return (int) left;
+    }
+```
+
+
+
 
 ## 常见题目
 
