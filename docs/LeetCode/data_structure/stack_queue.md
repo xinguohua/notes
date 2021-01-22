@@ -333,7 +333,105 @@ class Solution {
     }
 }
 ```
+
+#### [399. 除法求值](https://leetcode-cn.com/problems/evaluate-division/)
+
+> 给你一个变量对数组 equations 和一个实数值数组 values 作为已知条件，其中 equations[i] = [Ai, Bi] 和 values[i] 共同表示等式 Ai / Bi = values[i] 。每个 Ai 或 Bi 是一个表示单个变量的字符串。
+>
+> 另有一些以数组 queries 表示的问题，其中 queries[j] = [Cj, Dj] 表示第 j 个问题，请你根据已知条件找出 Cj / Dj = ? 的结果作为答案。
+
+利用图的深度遍历
+
+```java
+class Solution {
+    class Edge{
+        String from;
+        String to;
+        double val;
+
+        public Edge(String from,String to,double val){
+            this.from=from;
+            this.to=to;
+            this.val=val;
+        }
+    }
+    HashMap<String,List<Edge>> nodeEdges=new HashMap<>();
+    double[] mRes;
+    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        //1 构建加权有向图
+        for(int i=0;i<equations.size();i++){
+            List<String> edge=equations.get(i);
+            String v1=edge.get(0);
+            String v2=edge.get(1);
+            double val=values[i];
+
+            //向图里添加两条边
+            // 添加到 v1->v2 的边
+            List<Edge> v1Edges = nodeEdges.get(v1);
+            if (v1Edges == null) {
+                v1Edges = new ArrayList<>();
+                nodeEdges.put(v1, v1Edges);
+            }
+            v1Edges.add(new Edge(v1, v2, val));
+            // 添加到 v2->v1 的边
+            List<Edge> v2Edges = nodeEdges.get(v2);
+            if (v2Edges == null) {
+                v2Edges = new ArrayList<>();
+                nodeEdges.put(v2, v2Edges);
+            }
+            v2Edges.add(new Edge(v2, v1, 1.0 / val));
+        }
+
+        // 2. dfs 搜索数据
+         mRes = new double[queries.size()];
+        List<String> visited = new ArrayList<>();
+        for (int i = 0; i < queries.size(); i++) {
+            List<String> query = queries.get(i);
+            String start = query.get(0);
+            String dest = query.get(1);
+            visited.clear();
+            mRes[i] = dfs(start, dest, visited);
+        }
+        return mRes;
+        
+    }
+
+     private double dfs(String start, String dest, List<String> visited) {
+            // 验证是否存顶点
+            if (!nodeEdges.containsKey(start) || !nodeEdges.containsKey(dest)) {
+                return -1.0;
+            }
+            visited.add(start);
+            //递归终止条件
+            if (start.equals(dest)) {
+                return 1.0;
+            }
+            // 获取 start 顶点的边
+            List<Edge> startEdges = nodeEdges.get(start);
+            if (startEdges == null || startEdges.isEmpty()) {
+                return -1.0;
+            }
+            // 深度优先遍历集合
+            for (Edge edge : startEdges) {
+                //遍历过该节点则跳过
+                if (visited.contains(edge.to)) {
+                    continue;
+                }
+                double res = dfs(edge.to, dest, visited);
+                if (res != -1.0) {
+                    return res * edge.val;
+                }
+            }
+            return -1.0;
+        }
+
+}
+```
+
+
+
 ### DFS 非递归模板-2(栈实现,类似与树的非递归中序遍历)
+
 [动画](https://leetcode-cn.com/leetbook/read/queue-stack/gro21/)
 
 利用栈进行 DFS 非递归搜索模板
