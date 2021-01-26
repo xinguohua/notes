@@ -85,7 +85,7 @@
 | 第 13 章 二叉树与二分搜索树                       | [复习二叉树](/docs/LeetCode/data_structure/binary_tree.md) [复习二叉搜索树](/docs/LeetCode/basic_algorithm/binary_search_tree.md) | 3 [cyc树-637待做](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%A0%91.md) |      |
 | 第 14 章 分治算法 -                               | new                                                          | 4 [分治（cyc)](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%88%86%E6%B2%BB.md) |      |
 | 第 15 章 回溯算法（深度优先遍历）                 | [复习递归](/docs/LeetCode/basic_algorithm/recursion.md) [复习回溯](/docs/LeetCode/basic_algorithm/backtrack.md) | 2                                                            |      |
-| 第 16 章 动态规划                       | [跳过](/docs/LeetCode/advanced_algorithm/dp.md)              | 0 [cyc动态规划](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92.md) |      |
+| 第 16 章 动态规划                                 | [重点](/docs/LeetCode/advanced_algorithm/dp.md)              | 0 [cyc动态规划](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92.md) |      |
 | 第 17 章 贪心算法-                                | new                                                          | 12[贪心（cyc)](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E8%B4%AA%E5%BF%83%E6%80%9D%E6%83%B3.md) |      |
 | 第 18 章 哈希表（查找表）                         | new                                                          | 4 [哈希表](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%93%88%E5%B8%8C%E8%A1%A8.md) |      |
 | 第 19 章 图论算法-                                | new                                                          | 14 [图](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E5%9B%BE.md) |      |
@@ -97,7 +97,7 @@
 | 第 26 章 AVL 树（选学、面试几乎不考）             | new                                                          |                                                              |      |
 | 第 27 章 树状数组（选学、面试几乎不考）           | new                                                          |                                                              |      |
 | 第 28 章 红黑树、B 数、B+ 树（选学）              | new                                                          |                                                              |      |
-| 第 26 章 位运算(跳过)                             | [重点](/docs/LeetCode/data_structure/binary_op.md)           | [cyc位运算](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E4%BD%8D%E8%BF%90%E7%AE%97.md) |      |
+| 第 26 章 位运算(跳过)                             | [跳过](/docs/LeetCode/data_structure/binary_op.md)           | [cyc位运算](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E4%BD%8D%E8%BF%90%E7%AE%97.md) |      |
 | 第 27 章 数学问题(跳过)                           |                                                              | [cyc数学](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%95%B0%E5%AD%A6.md) |      |
 |                                                   |                                                              |                                                              |      |
 
