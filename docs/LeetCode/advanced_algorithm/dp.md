@@ -767,7 +767,7 @@ class Solution {
   
       
   
-  
+  #### 
 
 ## 序列型动态规划
 
@@ -3535,3 +3535,13 @@ public:
 
 
 # 第七次课
+
+
+
+# 相关题目
+
+#### [70. 爬楼梯-计数型](https://leetcode-cn.com/problems/climbing-stairs/)
+
+#### [198. 打家劫舍-最大最小](https://leetcode-cn.com/problems/house-robber/)
+
+#### [213. 打家劫舍 II-最大最小](https://leetcode-cn.com/problems/house-robber-ii/)

@@ -97,7 +97,7 @@
 | 第 26 章 AVL 树（选学、面试几乎不考）             | new                                                          |                                                              |      |
 | 第 27 章 树状数组（选学、面试几乎不考）           | new                                                          |                                                              |      |
 | 第 28 章 红黑树、B 数、B+ 树（选学）              | new                                                          |                                                              |      |
-| 第 26 章 位运算(跳过)                             | [跳过](/docs/LeetCode/data_structure/binary_op.md)           | [cyc位运算](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E4%BD%8D%E8%BF%90%E7%AE%97.md) |      |
+| 第 26 章 位运算(跳过)                             | [重点](/docs/LeetCode/data_structure/binary_op.md)           | [cyc位运算](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E4%BD%8D%E8%BF%90%E7%AE%97.md) |      |
 | 第 27 章 数学问题(跳过)                           |                                                              | [cyc数学](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E6%95%B0%E5%AD%A6.md) |      |
 |                                                   |                                                              |                                                              |      |
 
