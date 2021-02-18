@@ -1,4 +1,4 @@
-# 动态规划模板
+动态规划模板
 
 ![](./imgs/模板.png)
 
@@ -9,6 +9,8 @@
 ![](./imgs/isornot.png)
 
 题A是动态规划，题B是递归
+
+## 从题意分将动态规划分类
 
 ![](./imgs/what.png)
 
@@ -236,652 +238,674 @@ class Solution {
 
 
 
-
 # 第二次课
 
-## 坐标型动态规划
+## 动态规划从题型分类
 
-  [115. Unique Paths II](https://www.lintcode.com/problem/unique-paths-ii/description)
+- 坐标型动态规划
+
+  ![](./imgs/坐标型.png)
+
+- 序列型动态规划
+
+- 划分型动态规划
+
+## 坐标型动态规划（到点(x,y)的f(x,y)值））
+
+![](./imgs/坐标型总结.png)
+
+  ### [115. Unique Paths II](https://leetcode-cn.com/problems/unique-paths-ii/)
 
 > 现在考虑网格中有障碍物，那样将会有多少条不同的路径？
 >
 > 网格中的障碍和空位置分别用 1 和 0 来表示。
+>
+> ####  确定状态
 
-- DP解法
+* 最后一步
 
-  ```c++
-  class Solution 
-  {
-  public:
-      /**
-       * @param obstacleGrid: A list of lists of integers
-       * @return: An integer
-       */
-      int uniquePathsWithObstacles(vector<vector<int>> &obstacleGrid) 
-      {
-          // write your code here
-          int row  = obstacleGrid.size();
-          int col = obstacleGrid[0].size();
-          vector<vector<int>> dp(row,vector<int>(col));
-          
-          bool isrowobstacle = false;
-          for(int j = 0;j < col;j++)
-          {
-              if(obstacleGrid[0][j] == 1)
-              {
-                  isrowobstacle = true;
-              }
-              
-              if(isrowobstacle)
-              {
-                  dp[0][j] = 0;
-              }
-              else
-              {
-                  dp[0][j] = 1;
-              }
-          }
-          
-          bool iscolobstacle = false;
-          
-          for(int i = 0;i < row;i++)
-          {
-              if(obstacleGrid[i][0] == 1)
-              {
-                  iscolobstacle = true;
-              }
-              
-              if(iscolobstacle)
-              {
-                  dp[i][0] = 0;
-              }
-              else
-              {
-                  dp[i][0] = 1;
-              }
-          }
-          
-          for(int i = 1;i < row;i++)
-          {
-              for(int j = 1;j < col;j++)
-              {
-                  if(obstacleGrid[i][j] == 1)
-                  {
-                      dp[i][j] = 0;
-                      continue;
-                  }
-                  
-                  dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
-                  
-                  //cout << i << " " << j << " " << dp[i][j] << endl;
-              }
-          }
-          
-          return dp[row - 1][col - 1];
-      }
-  };
-  ```
+   ![](./imgs/最后一步1.png)
 
-- 老师上课写的DP程序
+* 子问题
 
-  ```c++
-  class Solution {
-  public:
-      /**
-       * @param obstacleGrid: A list of lists of integers
-       * @return: An integer
-       */
-      int uniquePathsWithObstacles(vector<vector<int>> &obstacleGrid) 
-      {
-          if(obstacleGrid.empty())
-          {
-              return true;
-          }
-          // write your code here
-          int row = obstacleGrid.size();
-          int col = obstacleGrid[0].size();
-          
-          vector<vector<int>> dp(row,vector<int>(col));
-          
-          for(int i = 0;i < row;i++)
-          {
-              for(int j = 0;j < col;j++)
-              {
-                  dp[i][j] = 0;
-                  if(obstacleGrid[i][j] == 1)
-                  {
-                      dp[i][j] = 0;
-                      //cout << i  << " " << j << " " << dp[i][j] << endl;
-                      continue;
-                  }
-                  
-                  if(i == 0 && j == 0)
-                  {
-                      dp[i][j] = 1;
-                      //cout << i  << " " << j << " " << dp[i][j] << endl;
-                      continue;
-                  }
-                  
-                  if(i > 0)
-                  {
-                      dp[i][j] = dp[i][j] + dp[i - 1][j];
-                  }
-                  
-                  if(j > 0)
-                  {
-                      dp[i][j] = dp[i][j] + dp[i][j - 1];
-                  }
-                  //cout << i  << " " << j << " " << dp[i][j] << endl;
-              }
-          }
-          
-          return dp[row - 1][col - 1];
-      }
-  };
-  ```
+  两个子问题是可以直接加的，因为机器人只能右，下走，因此这两个位置互不相交。
 
+   ![](./imgs/子问题.png)
+
+* 状态
+
+  设f(i)(j)为机器人**有多少种方式**从左上角走到**(i,j)**
+
+#### 转移方程
+
+![](./imgs/转移方程1.png)
+
+#### 初始条件和边界情况
+
+* 初始条件
+
+  f(0)(0)=1 机器人只有一种方式走到左上角
+
+* 边界情况
+
+  i=0或j=0,则前一步只能有一种方式到左上角 f(i)(j)=1
   
+* **如果(i,j)格有障碍，f(i)(j)=0,表示机器人不能到达此格（0种方式）**
 
-  [397. Longest Continuous Increasing Subsequence](https://www.lintcode.com/problem/longest-continuous-increasing-subsequence/description)
+#### 计算顺序（先按行再按列）
 
-  > 给定一个整数数组（下标从 0 到 n-1， n 表示整个数组的规模），请找出该数组中的最长上升连续子序列。（最长上升连续子序列可以定义为从右到左或从左到右的序列。）
-  >
-  > ### Example
-  >
-  > **样例 1：**
-  >
-  > ```c++
-  > 输入：[5, 4, 2, 1, 3]
-  > 输出：4
-  > 解释：
-  > 给定 [5, 4, 2, 1, 3]，其最长上升连续子序列（LICS）为 [5, 4, 2, 1]，返回 4。
-  > ```
+用到的状态已经提前计算了出来
 
-- DP解法
+计算第0行-----不同列-------------------》
 
-    ```C++
-  class Solution 
-  {
-  public:
-      /**
-       * @param A: An array of Integer
-       * @return: an integer
-       */
-      int longestIncreasingContinuousSubsequence(vector<int> &A) 
-      {
-          if(A.empty())
-          {
-              return 0;
-          }
-          // write your code here
-          int max1 = getlics(A);
-          reverse(A.begin(),A.end());
-          int max2 = getlics(A);
-          return std::max(max1,max2);
-      }
-  private:
-      int getlics(vector<int>& A)
-      {
-          int n = A.size();
-          vector<int> dp(n,1);
-          
-          for(int i = 1;i < n;i++)
-          {
-              if(A[i] > A[i - 1])
-              {
-                  dp[i] = dp[i - 1] + 1;
-              }
-          }
-          
-          return *max_element(dp.begin(),dp.end());
-      }
-  };
-  ```
+计算第1行-----不同列-------------------》
 
-  
+。。。
 
-  [110. Minimum Path Sum](https://www.lintcode.com/problem/minimum-path-sum/description)
+#### 代码
 
-  > 给定一个只含非负整数的m*n网格，找到一条从左上角到右下角的可以使数字和最小的路径。
-  >
-  > 
-  >
-  > ### Example
-  >
-  > ```c++
-  > 样例 1:
-  > 	输入:  [[1,3,1],[1,5,1],[4,2,1]]
-  > 	输出: 7
-  > 	
-  > 	样例解释：
-  > 	路线为： 1 -> 3 -> 1 -> 1 -> 1。
-  > ```
-  
-  - DP解法
-  
-    ```c++
-    class Solution {
-    public:
-        /**
-         * @param grid: a list of lists of integers
-         * @return: An integer, minimizes the sum of all numbers along its path
-         */
-        int minPathSum(vector<vector<int>> &grid) 
-        {
-            // write your code here
-            int row = grid.size();
-            int col = grid[0].size();
-            
-            vector<vector<int>> dp(row,vector<int>(col));
-            
-            dp[0][0] = grid[0][0];
-            
-            for(int j = 1;j < col;j++)
-            {
-                dp[0][j] = dp[0][j - 1] + grid[0][j];
+
+```java
+ public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        //m行，n列
+        int m=obstacleGrid.length;
+        int n=obstacleGrid[0].length;
+        
+        int dp[][] = new int[m][n];
+        dp[0][0]=1;
+
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(obstacleGrid[i][j]==1){
+                    dp[i][j]=0;
+                }else{
+                     if(i==0&&j==0){
+                    dp[i][j]=1;
+                    continue;
+                    }
+               if(i==0){
+                    dp[i][j]=dp[i][j-1];
+                    continue;
+                }
+                if(j==0){
+                    dp[i][j]=dp[i-1][j];
+                    continue;
+                }
+                dp[i][j]=dp[i][j-1]+dp[i-1][j];
+                }
+               
             }
-            
-            for(int i = 1;i < row;i++)
-            {
-                dp[i][0] = dp[i - 1][0] + grid[i][0];
+
+        }
+
+        return dp[m-1][n-1];
+    }
+```
+
+### [ 397. 最长上升连续子序列](https://www.lintcode.com/problem/397/)
+
+> 给定一个整数数组（下标从 0 到 n-1， n 表示整个数组的规模），请找出该数组中的最长上升连续子序列。（最长上升连续子序列可以定义为从右到左或从左到右的序列。）
+>
+> ### 样例
+>
+> **Example 1:**
+>
+> ```
+> Input: [5, 4, 2, 1, 3]
+> Output: 4
+> Explanation:
+> For [5, 4, 2, 1, 3], the LICS  is [5, 4, 2, 1], return 4.
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: [5, 1, 2, 3, 4]
+> Output: 4
+> Explanation:
+> For [5, 1, 2, 3, 4], the LICS  is [1, 2, 3, 4], return 4.
+> ```
+#### 确定状态
+
+* 最后一步
+
+   ![](./imgs/最后一步2.png)
+
+* 子问题
+
+  
+
+   ![](./imgs/子问题2.png)
+
+* 状态
+
+  设f(j）=以a[j]结尾的最长连续上升子序列的长度
+
+#### 转移方程
+
+![](./imgs/转移方程216.png)
+
+#### 初始条件和边界情况
+
+* 初始条件
+
+  f(0)=1 第一个元素长度为1
+
+* 边界情况
+
+  j>0,a[j]前面至少还有一个元素
+
+#### 计算顺序（按行顺序计算）
+
+用到的状态已经提前计算了出来
+
+f(0),f(1),f(2),f(3)........f(n-1)
+
+* 答案是Max(f(0),f(1),f(2),f(3)........f(n-1))
+
+#### 代码
+
+
+```java
+public class Solution {
+    /**
+     * @param A: An array of Integer
+     * @return: an integer
+     */
+    public int longestIncreasingContinuousSubsequence(int[] A) {
+        if(A.length==0||A.length==1)
+        return A.length;
+        // write your code here
+        int[] dp=new int[A.length];
+        dp[0]=1;
+        int max1=0;
+        int max2=0;
+        for (int i=1; i<A.length;i++ ){
+            if(A[i]>A[i-1]){
+                dp[i]=dp[i-1]+1;
+            }else{
+                dp[i]=1;
             }
-            
-            for(int i = 1;i < row;i++)
-            {
-                for(int j = 1;j < col;j++)
-                {
-                    //dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
-                    //dp[i][j] = dp[i][j - 1] + dp[i - 1][j];
-                    dp[i][j] = std::min(dp[i][j - 1],dp[i - 1][j]) + grid[i][j];
+            if(dp[i]>=max1){
+                max1=dp[i];
+            }
+        }
+     
+        
+         for (int i=1; i<A.length;i++ ){
+            if(A[i]<A[i-1]){
+                dp[i]=dp[i-1]+1;
+            }else{
+                dp[i]=1;
+            }
+            if(dp[i]>=max2){
+                max2=dp[i];
+            }
+            System.out.println(dp[i]);
+        }
+        
+        
+        return Math.max(max1,max2);
+    }
+}
+```
+
+### [64. 最小路径和](https://leetcode-cn.com/problems/minimum-path-sum/)
+
+>给定一个包含非负整数的 m x n 网格 grid ，请找出一条从左上角到右下角的路径，使得路径上的
+>数字总和为最小。
+>说明：每次只能向下或者向右移动一步。
+#### 确定状态
+
+* 最后一步
+
+   ![](./imgs/最后一步2162.png)
+
+* 子问题
+
+  
+
+   ![](./imgs/子问题2162.png)
+
+* 状态
+
+  设f(i,j）=从（0，0）走到（i，j）的最小数字总和
+
+#### 转移方程
+
+![](./imgs/转移方程2162.png)
+
+#### 初始条件和边界情况
+
+* 初始条件
+
+  f(0，0)=A(0,0) 
+
+* 边界情况
+
+  i=0,j=0,则前一步只能由一个方向过来
+
+#### 计算顺序（先按行顺序计算，再按列计算）
+
+用到的状态已经提前计算了出来
+
+f(0,0),f(0,1),f(0,2),f(0,3)........f(0,n-1)
+
+f(1,0),f(1,1),f(1,2),f(1,3)........f(1,n-1)
+
+......
+
+f(m-1,0),f(m-1,1),f(m-1,2),f(m-1,3)........f(m-1,n-1)
+
+#### 代码
+
+
+```java
+class Solution {
+    public int minPathSum(int[][] grid) {
+        if(grid.length==0||grid[0].length==0){
+            return 0;
+        }
+        int[][] dp= new int[grid.length][grid[0].length];
+        
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                if(i==0&&j==0){
+                   dp[0][0]=grid[0][0];
+                }else if(i==0){
+                   dp[i][j]=dp[0][j-1]+grid[i][j];
+                }else if(j==0){
+                   dp[i][j]=dp[i-1][0]+grid[i][j];
+                }else{
+                   dp[i][j]=Math.min(dp[i-1][j],dp[i][j-1])+grid[i][j];
                 }
             }
-            
-            return dp[row - 1][col - 1];
         }
-    };
-    ```
-  
     
-  
-  [553. Bomb Enemy](https://www.lintcode.com/problem/bomb-enemy/description)
-  
-  > 给定一个二维矩阵, 每一个格子可能是一堵墙 `W`,或者 一个敌人 `E` 或者空 `0` (数字 '0'), 返回你可以用一个炸弹杀死的最大敌人数. 炸弹会杀死所有在同一行和同一列没有墙阻隔的敌人。 由于墙比较坚固，所以墙不会被摧毁.
-  >
-  > ### Example
-  >
-  > **样例1**
-  >
-  > ```c++
-  > 输入:
-  > grid =[
-  >      "0E00",
-  >      "E0WE",
-  >      "0E00"
-  > ]
-  > 输出: 3
-  > 解释:
-  > 把炸弹放在 (1,1) 能杀3个敌人
-  > ```
-  
-  - 暴力解法
-  
-    ```c++
-    class Solution 
-    {
-    public:
-        /**
-         * @param grid: Given a 2D grid, each cell is either 'W', 'E' or '0'
-         * @return: an integer, the maximum enemies you can kill using one bomb
-         */
-        int maxKilledEnemies(vector<vector<char>> &grid) 
-        {
-            if(grid.empty())
-            {
-                return 0;
+        return dp[grid.length-1][grid[0].length-1];
+    }
+}
+```
+#### 空间优化
+
+![](./imgs/空间优化.png)
+
+```java
+class Solution {
+    public int minPathSum(int[][] grid) {
+        if(grid.length==0||grid[0].length==0){
+            return 0;
+        }
+        int m=grid.length;
+        int n=grid[0].length;
+        //空间优化 只用两行 当前行now 和上一行old
+        int[][] dp= new int[2][n];
+        int now=0,old=1;
+        for(int i=0;i<m;i++){
+           
+            for(int j=0;j<n;j++){
+                if(i==0&&j==0){
+                   dp[0][0]=grid[0][0];
+                }else if(i==0){
+                   dp[now][j]=dp[now][j-1]+grid[i][j];
+                }else if(j==0){
+                   dp[now][j]=dp[old][0]+grid[i][j];
+                }else{
+                   dp[now][j]=Math.min(dp[old][j],dp[now][j-1])+grid[i][j];
+                }
             }
-            // write your code here
-            int row = grid.size();
-            int col = grid[0].size();
-            int ans = 0;
-            
-            for(int i = 0;i < row;i++)
-            {
-                for(int j = 0;j < col;j++)
-                {
-                    if(grid[i][j] == 'E' || grid[i][j] == 'W')
-                    {
+            old = now; // old is row i-1
+            now=1-now; //now is row i
+            //rolling array
+    
+        }
+        //已经反转刚才的now-->old
+        return dp[old][n-1];
+    }
+}
+```
+
+
+### [361. 轰炸敌人](https://leetcode-cn.com/problems/bomb-enemy/)
+
+>由于炸弹的威力不足以穿透墙体，炸弹只能炸到同一行和同一列没被墙体挡住的敌人。
+>
+>**注意：**你只能把炸弹放在一个空的格子里
+#### 确定状态
+
+* 最后一步
+
+   ![](./imgs/最后一步218.png)
+
+* 子问题
+
+  
+
+   ![](./imgs/子问题218.png)
+
+* 状态
+
+  设up(i,j）=在（i，j）放一个炸弹向上炸死的敌人数。
+
+#### 转移方程
+
+![](./imgs/转移方程218.png)
+
+#### 初始条件和边界情况
+
+* 初始条件
+
+  ![](./imgs/初始条件218.png)
+
+
+#### 计算顺序（先按行顺序计算，再按列计算）
+
+用到的状态已经提前计算了出来
+
+up(0,0),up(0,1),up(0,2),up(0,3)........up(0,n-1)
+
+up(1,0),up(1,1),up(1,2),up(1,3)........up(1,n-1)
+
+......
+
+up(m-1,0),up(m-1,1),up(m-1,2),up(m-1,3)........up(m-1,n-1)
+
+#### 四个方向
+
+![](./imgs/四个方向.png)
+
+#### 代码
+
+
+```java
+class Solution {
+    public int maxKilledEnemies(char[][] grid) {
+
+        if(grid.length==0||grid[0].length==0)
+            return 0;
+        int m=grid.length;
+        int n=grid[0].length;    
+        int[][] up= new int[m][n];
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(i==0&&j==0){
+                   if(grid[0][0]=='E'){
+                       up[0][0]=1;
+                   }else{
+                       up[0][0]=0;
+                   } 
+                }else if(i==0){
+                   if(grid[0][j]=='E'){
+                       up[0][j]=1;
+                   }else{
+                       up[0][j]=0;
+                   } 
+                }else{
+                    if(grid[i][j]=='E'){
+                       up[i][j]=up[i-1][j]+1;
+                   }else if(grid[i][j]=='W'){
+                       up[i][j]=0;
+                   }else{
+                       up[i][j]=up[i-1][j];
+                   } 
+                }
+            }
+        } 
+
+        int[][] down= new int[m][n];
+        for(int i=m-1;i>=0;i--){
+            for(int j=0;j<n;j++){
+                if(i==m-1&&j==0){
+                   if(grid[i][j]=='E'){
+                       down[i][j]=1;
+                   }else{
+                       down[i][j]=0;
+                   } 
+                }else if(i==m-1){
+                   if(grid[i][j]=='E'){
+                       down[i][j]=1;
+                   }else{
+                       down[i][j]=0;
+                   } 
+                }else{
+                    if(grid[i][j]=='E'){
+                       down[i][j]=down[i+1][j]+1;
+                   }else if(grid[i][j]=='W'){
+                       down[i][j]=0;
+                   }else{
+                       down[i][j]=down[i+1][j];
+                   } 
+                }
+            }
+        }
+
+        int[][] right= new int[m][n];
+         for(int i=0;i<m;i++){
+            for(int j=n-1;j>=0;j--){
+                if(i==0&&j==n-1){
+                   if(grid[i][j]=='E'){
+                       right[i][j]=1;
+                   }else{
+                       right[i][j]=0;
+                   } 
+                }else if(j==n-1){
+                   if(grid[i][j]=='E'){
+                       right[i][j]=1;
+                   }else{
+                       right[i][j]=0;
+                   } 
+                }else{
+                   if(grid[i][j]=='E'){
+                       right[i][j]=right[i][j+1]+1;
+                   }else if(grid[i][j]=='W'){
+                       right[i][j]=0;
+                   }else{
+                       right[i][j]=right[i][j+1];
+                   } 
+                }
+            }
+        } 
+
+        int[][] left= new int[m][n];
+         for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(i==0&&j==0){
+                   if(grid[i][j]=='E'){
+                       left[i][j]=1;
+                   }else{
+                       left[i][j]=0;
+                   } 
+                }else if(j==0){
+                   if(grid[i][j]=='E'){
+                       left[i][j]=1;
+                   }else{
+                       left[i][j]=0;
+                   } 
+                }else{
+                   if(grid[i][j]=='E'){
+                       left[i][j]=left[i][j-1]+1;
+                   }else if(grid[i][j]=='W'){
+                       left[i][j]=0;
+                   }else{
+                       left[i][j]=left[i][j-1];
+                   } 
+                }
+            }
+        }
+
+        int max=0; 
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                   if(grid[i][j]=='0'){
+                       if(up[i][j]+down[i][j]+right[i][j]+left[i][j]>=max){
+                           max=up[i][j]+down[i][j]+right[i][j]+left[i][j];
+                       }
+                   } 
+            }
+        }
+
+        return max;
+    }
+}
+```
+
+
+## 序列型动态规划（序列前x项的f(x)值）
+
+### [256. 粉刷房子](https://leetcode-cn.com/problems/paint-house/)
+
+#### 确定状态
+
+* 最后一步
+
+   已知最后一步的颜色往前求前一步最小花费时，不知道前一步的颜色，求出来前一步的最小花费可能发生颜色的碰撞,所以前一步的最小花费需要记录颜色**（序列+状态）**
+
+    ![](./imgs/子问题a.png)
+
+* 子问题
+
+   ![](./imgs/子问题1.png)
+
+* 状态
+
+  设f(i)(j)为油漆前**i**栋(0至i-1)，并且第**i-1**栋是**j种颜色**的**最小花费**
+
+#### 转移方程
+
+![](./imgs/转移方程a.png)
+
+![](./imgs/转移方程a1.png)
+
+#### 初始条件和边界情况
+
+* **序列初始化十分方便 前0项就是没有项直接等于0**
+
+![](./imgs/边界情况a.png)
+
+#### 计算顺序（先按行再按列）
+
+用到的状态已经提前计算了出来
+
+计算第0行-----不同列-------------------》f(0)(0) f(0)(1) f(0)(2)
+
+计算第1行-----不同列-------------------》f(1)(0) f(1)(1) f(1)(2)
+
+。。。
+
+计算第N行-----不同列-------------------》f(N)(0) f(N)(1) f(N)(2)
+
+答案是min(f(N)(0) ,f(N)(1) ,f(N)(2))
+
+#### 代码
+
+```java
+class Solution {
+   public static int minCost(int[][] costs) {
+        if(costs.length==0||costs[0].length==0)
+            return 0;
+        int m=costs.length+1;
+        int n=costs[0].length;
+        
+        //初始状态不用设 默认前0项为0
+        //前n个房子第j个颜色 包括0种颜色的最小花销
+        int dp[][]= new int[m][n];
+        for(int i=1;i<m;i++){
+            for(int j=0;j<n;j++){
+                //前i个第j种颜色的最小花费
+                int min=Integer.MAX_VALUE;
+                for(int k=0;k<n;k++){
+                    if(k==j){
                         continue;
                     }
-                    
-                    ans = std::max(ans,getkillnum(grid,i,j));
-                }
-            }
-            
-            return ans;
-        }
-    private:
-        int getkillnum(vector<vector<char>>& grid,int curx,int cury)
-        {
-            int row = grid.size();
-            int col = grid[0].size();
-            int dx[] = {-1,1,0,0};
-            int dy[] = {0,0,-1,1};  //上下左右四个方向
-            int ans = 0;
-            
-            for(int i = 0;i < 4;i++)
-            {
-                for(int step = 0;;step++)
-                {
-                    int nextx = curx + step * dx[i];
-                    int nexty = cury + step * dy[i];
-                    
-                    if(nextx >= row || nexty >= col || nextx < 0 || nexty < 0 || grid[nextx][nexty] == 'W')
-                    {
-                        //遇到墙或者是边界
-                        break;
-                    }
-                    
-                    if(grid[nextx][nexty] == 'E')
-                    {
-                        ans++;
+                    if(dp[i-1][k]<=min){
+                        min=dp[i-1][k];
                     }
                 }
+                dp[i][j]=min+costs[i-1][j];
             }
-            
-            return ans;
         }
-    };
-    ```
-  
-    🎈 暴力解法没办法过lint code的OJ。
-  
-  - DP解法
-  
-    ```c++
-      class Solution 
-      {
-      public:
-          /**
-           * @param grid: Given a 2D grid, each cell is either 'W', 'E' or '0'
-           * @return: an integer, the maximum enemies you can kill using one bomb
-           */
-          int maxKilledEnemies(vector<vector<char>> &grid) 
-          {
-             if(grid.empty() || grid[0].empty())
-             {
-                 return 0;
-             }
-              int row = grid.size();
-              int col = grid[0].size();
-              
-              vector<vector<int>> up(row,vector<int>(col));
-              vector<vector<int>> down(row,vector<int>(col));
-              vector<vector<int>> left(row,vector<int>(col));
-              vector<vector<int>> right(row,vector<int>(col));
-              
-              //计算up
-              for(int j = 0;j < col;j++)
-              {
-                  if(grid[0][j] == 'E')
-                  {
-                      up[0][j] = 1;
-                  }
-                  else
-                  {
-                      up[0][j] = 0;
-                  }
-              }
-              
-              for(int i = 1;i < row;i++)
-              {
-                  for(int j = 0;j < col;j++)
-                  {
-                      if(grid[i][j] == 'W')
-      				{
-      					up[i][j] = 0;
-      				}
-      				else if(grid[i][j] == 'E')
-      				{
-      					up[i][j] = up[i - 1][j] + 1;
-      				}
-      				else if(grid[i][j] == '0')
-      				{
-      					up[i][j] = up[i - 1][j];
-      				}
-                  }
-              }
-      		
-      		//计算down
-      		for(int j = 0;j < col;j++)
-      		{
-      			if(grid[row - 1][j] == 'E')
-      			{
-      				down[row - 1][j] = 1;
-      			}
-      			else
-      			{
-      				down[row - 1][j] = 0;
-      			}
-      		}
-      		
-      		for(int i = row - 2;i >= 0;i--)
-      		{
-      			for(int j = 0;j < col;j++)
-      			{
-      				if(grid[i][j] == 'W')
-      				{
-      					down[i][j] = 0;
-      				}
-      				else if(grid[i][j] == 'E')
-      				{
-      					down[i][j] = down[i + 1][j] + 1;
-      				}
-      				else if(grid[i][j] == '0')
-      				{
-      					down[i][j] = down[i + 1][j];
-      				}
-      			}
-      		}
-      		
-      		//计算left
-      		for(int i = 0;i < row;i++)
-      		{
-      			if(grid[i][col - 1] == 'E')
-      			{
-      				left[i][col - 1] = 1;
-      			}
-      			else
-      			{
-      				left[i][col - 1] = 0;
-      			}
-      		}
-      		
-      		for(int i = 0;i < row;i++)
-      		{
-      			for(int j = col - 2;j >= 0;j--)
-      			{
-      				if(grid[i][j] == 'W')
-      				{
-      					left[i][j] = 0;
-      				}
-      				else if(grid[i][j] == 'E')
-      				{
-      					left[i][j] = left[i][j + 1] + 1;
-      				}
-      				else if(grid[i][j] == '0')
-      				{
-      					left[i][j] = left[i][j + 1];
-      				}
-      			}
-      		}
-      		//计算right
-      		for(int i = 0;i < row;i++)
-      		{
-      			if(grid[i][0] == 'E')
-      			{
-      				right[i][0] = 1;
-      			}
-      			else
-      			{
-      				right[i][0] = 0;
-      			}
-      		}
-      		
-      		for(int i = 0;i < row;i++)
-      		{
-      			for(int j = 1;j < col;j++)
-      			{
-      			    if(grid[i][j] == 'W')
-      				{
-      					right[i][j] = 0;
-      				}
-      				else if(grid[i][j] == 'E')
-      				{
-      					right[i][j] = right[i][j - 1] + 1;
-      				}
-      				else if(grid[i][j] == '0')
-      				{
-      					right[i][j] = right[i][j - 1];
-      				}
-      			}
-      		}
-      		
-      		int ans = 0;
-      		
-      		for(int i = 0;i < row;i++)
-      		{
-      			for(int j = 0;j < col;j++)
-      			{
-      				if(grid[i][j] == 'E' || grid[i][j] == 'W')
-      				{
-      				    continue;
-      				}
-      				ans = std::max(ans,up[i][j] + down[i][j] + left[i][j] + right[i][j]);
-      			}
-      		}
-      		
-      		return ans;
-          }
-      };
-    ```
-  
-      
-  
-  #### 
+        int result=Integer.MAX_VALUE;
+        for(int k=0;k<n;k++){
+            if(dp[m-1][k]<=result){
+                result=dp[m-1][k];
+            }
+        }
+        return result;
+    }
+}
+```
 
-## 序列型动态规划
+### [序列+位操作型动态规划](https://leetcode-cn.com/problems/counting-bits/)
 
-  [515. Paint House](https://www.lintcode.com/problem/paint-house/description)
+>[338. 比特位计数](https://leetcode-cn.com/problems/counting-bits/)
 
-- DP解法
+给定一个非负整数 **num**。对于 **0 ≤ i ≤ num** 范围中的每个数字 **i** ，计算其二进制数中的 1 的数目并将它们作为数组返回。
 
-  ```c++
-  class Solution 
-  {
-  public:
-      /**
-       * @param costs: n x 3 cost matrix
-       * @return: An integer, the minimum cost to paint all houses
-       */
-      int minCost(vector<vector<int>> &costs) 
-      {
-          if(costs.empty())
-          {
-              return 0;
-          }
-          int row = costs.size();
-          int col = costs[0].size();
-          
-          vector<vector<int>> dp(row,vector<int>(col));
-          
-          for(int j = 0;j < col;j++)
-          {
-              dp[row - 1][j] = costs[row - 1][j];
-          }
-          
-          for(int i = row - 2;i >= 0;i--)
-          {
-              for(int j = 0;j < col;j++)
-              {
-                  if(j == 0)
-                  {
-                      dp[i][j] = costs[i][j] + std::min(dp[i + 1][j + 1],dp[i + 1][j + 2]);
-                  }
-                  else if(j == 1)
-                  {
-                      dp[i][j] = costs[i][j] + std::min(dp[i + 1][j - 1],dp[i + 1][j + 1]);
-                  }
-                  else if(j == 2)
-                  {
-                      dp[i][j] = costs[i][j] + std::min(dp[i + 1][j - 1],dp[i + 1][j - 2]);
-                  }
-                  //cout << dp[i][j] << " ";
-              }
-              //cout << endl;
-          }
-          
-          
-          return *min_element(dp[0].begin(),dp[0].end());
-      }
-  };
-  ```
+**示例 1:**
 
-  
+```
+输入: 2
+输出: [0,1,1]
+```
 
-## 序列+位操作型动态规划
+**示例 2:**
 
-  [664. Counting Bits](https://www.lintcode.com/problem/counting-bits/description)
+```
+输入: 5
+输出: [0,1,1,2,1,2]
+```
 
-> 给出一个 **非负** 整数 num，对所有满足 `0 ≤ i ≤ num` 条件的数字 i 均需要计算其二进制表示中数字 1 的个数并以数组的形式返回。
->
-> ### Example
->
-> **样例1**
->
-> ```c++
-> 输入： 5
-> 输出： [0,1,1,2,1,2]
-> 解释：
-> 0~5的二进制表示分别是：
-> 000
-> 001
-> 010
-> 011
-> 100
-> 101
-> 每个数字中1的个数为： 0,1,1,2,1,2
-> ```
+#### 确定状态
 
-  ```c++
-  class Solution 
-  {
-  public:
-      /**
-       * @param num: a non negative integer number
-       * @return: an array represent the number of 1's in their binary
-       */
-      vector<int> countBits(int num) 
-      {
-          // write your code here
-          vector<int> ans(num + 1);
-          
-          ans[0] = 0;
-          
-          for(int i = 1;i <= num;i++)
-          {
-              ans[i] = ans[i >> 1] + i % 2;
-          }
-          
-          return ans;
-      }
-  };
-  ```
+* 最后一步
 
-  
+    ![](./imgs/最后一步2182.png)
 
-## 划分型动态规划
+* 子问题
 
-  [512. Decode Ways](https://www.lintcode.com/problem/decode-ways/description)
+   ![](./imgs/子问题2182.png)
+
+* 状态
+
+  设f(i)表示i的二进制有多少个1**（和位操作相关的动态规划一般用值作状态）**
+
+#### 转移方程
+
+![](./imgs/转移方程2182.png)
+
+
+
+#### 初始条件和边界情况
+
+* **f(0)=0**
+
+#### 计算顺序（按行从小到大）
+
+用到的状态已经提前计算了出来
+
+f(0)，f(1) ,f(2),....f(n)
+
+#### 代码
+
+```java
+class Solution {
+    public int[] countBits(int num) {
+        int[] dp=new int[num+1];
+
+        for(int i=1;i<=num;i++){
+            dp[i]=dp[i>>1]+i%2;
+        }
+
+        return dp;
+    }
+}
+```
+
+
+
+## 划分型动态规划(划分序列前i个值为f(i))
+
+[91. 解码方法](https://leetcode-cn.com/problems/decode-ways/)
 
 > 有一个消息包含`A-Z`通过以下规则编码
 >
@@ -903,258 +927,198 @@ class Solution {
 > 输出: 2
 > 解释: 它可以被解码为 AB (1 2) 或 L (12).
 > ```
+### 确定状态
 
-- 记忆化递归解法
+* 最后一步
 
-  ```c++
-  class Solution 
-  {
-  public:
-      /**
-       * @param s: a string,  encoded message
-       * @return: an integer, the number of ways decoding
-       */
-      int numDecodings(string &s) 
-      {
-          if(s.empty())
-          {
-              return 0;
-          }
-          return dfs(s,0);
-      }
-  private:
-      int dfs(string& s,int start)
-      {
-          if(start == s.size())
-          {
-              return 1;
-          }
-          
-          if(m.count(start))
-          {
-              return m[start];
-          }
-          
-          int ans = 0;
-          int num1 = stoi(s.substr(start,1));
-          if(num1 == 0)
-          {
-              return 0;
-          }
-          if(num1 <= 26 && num1 > 0)
-          {
-              ans = ans + dfs(s,start + 1);
-          }
-          if(start + 2 > s.size())
-          {
-             m[start] = ans;
-             return ans; 
-          }
-          int num2 = stoi(s.substr(start,2));
-          if(num2 == 0)
-          {
-              return 0;
-          }
-          if(num2 <= 26 && num2 > 0)
-          {
-              ans = ans + dfs(s,start + 2);
-          }
-          m[start] = ans;
-          return ans;
-      }
-      
-      unordered_map<int,int> m;
-  };
-  ```
+   解密数字串即**划分**若干段数字，每段数字对应一个字母。
 
-  - DP解法
+   最后一步，对应一个字母（可能划分两个数字，可能划分一个数字）
 
-    ```c++
-    class Solution {
-    public:
-        /**
-         * @param s: a string,  encoded message
-         * @return: an integer, the number of ways decoding
-         */
-        int numDecodings(string &s) 
-        {
-            if(s.empty())
-            {
-                return 0;
+* 子问题
+
+   ![](./imgs/子问题b.png)
+
+* 状态
+
+  设**f(i)**为数字串S**前i个字符**的**解密方式数**
+
+### 转移方程
+
+![](./imgs/转移方程b.png)
+
+### 初始条件和边界情况
+
+* **序列初始化十分方便 前0项就是没有项直接解密为空字符串=1**
+
+![](./imgs/边界情况b.png)
+
+### 计算顺序
+
+用到的状态已经提前计算了出来
+
+f(0),f(1),f(2)....f(n)
+
+### 代码
+
+```java
+class Solution {
+    public int numDecodings(String s) {
+        char[] chars=s.toCharArray();
+        int length=chars.length;
+        int[] dp=new int[length+1];
+        dp[0]=1;
+        for(int i=1;i<=length;i++){
+            if(i-1>=0){
+              if('1'<=chars[i-1]&&chars[i-1]<='9'){
+                dp[i]+=dp[i-1];
+               }  
+            }else{
+                continue;
             }
-            int n = s.size();
-            
-            vector<int> dp(n + 1);
-            
-            dp[n] = 1;  //递归的结束条件
-            
-            if(s[n - 1] == '0')
-            {
-                dp[n - 1] = 0;
-            }
-            else
-            {
-                dp[n - 1] = 1;
-            }
-            
-            for(int start = n - 2;start >= 0;start--)
-            {
-                if(s[start] == '0')
-                {
-                    dp[start] = 0;
-                    continue;
+
+            if(i-2>=0){
+                if('0'<=chars[i-1]&&chars[i-1]<='6'&&chars[i-2]=='2'||'1'==chars[i-2]&&'0'<=chars[i-1]&&chars[i-1]<='9'){
+                dp[i]+=dp[i-2];
                 }
-                
-                dp[start] = dp[start + 1];
-            
-                int num = stoi(s.substr(start,2));
-                
-                if(num > 0 && num <= 26)
-                {
-                    dp[start] = dp[start] + dp[start + 2];
-                }
-            
+            }else{
+                continue;
             }
-            
-    
-            return dp[0];
+           
         }
-    };
-    ```
-
-    
-
-------
+        return dp[length];
+    }
+}
+```
 
 # 第三次课
 
-  ## 序列型动态规划
+## 序列型动态规划
 
-[516. Paint House II](https://www.lintcode.com/problem/paint-house-ii/description)
+![](./imgs/序列型动态规划.png)
 
-- DP解法 时间复杂度为`O(n * k * k)`其中`n`表示矩阵行数，`k`表示矩阵列数
+### [265. 粉刷房子 II](https://leetcode-cn.com/problems/paint-house-ii/)
 
-  这个解法虽然能通过，但是时间复杂度比较高。
+#### 确定状态
 
-  ```c++
-  class Solution {
-  public:
-      /**
-       * @param costs: n x k cost matrix
-       * @return: an integer, the minimum cost to paint all houses
-       */
-      int minCostII(vector<vector<int>> &costs) 
-      {
-          // write your code here
-          if(costs.empty())
-          {
-              return 0;
-          }
-          int row = costs.size();
-          int col = costs[0].size();
-          vector<vector<int>> dp(row,vector<int>(col));
-          
-          for(int j = 0;j < col;j++)
-          {
-              dp[row - 1][j] = costs[row - 1][j];
-          }
-          
-          int mincost = INT_MAX;
-          for(int i = row - 2;i >= 0;i--)
-          {
-              for(int j = 0;j < col;j++)
-              {
-                  for(int k = 0;k < col;k++)
-                  {
-                      if(k == j)
-                      {
-                          continue;
-                      }
-                      mincost = std::min(mincost,dp[i + 1][k]);
-                  }
-                  dp[i][j] = costs[i][j] + mincost;
-                  mincost = INT_MAX;
-              }
-          }
-          
-          return *min_element(dp[0].begin(),dp[0].end());
-      }
-  };
-  ```
+* 最后一步
 
-  其实仔细观察程序就能发现，时间复杂度高的原因是，对于每一行，都要花费一个时间复杂度为`O(k)`的去搜索下一行的最小值。现在优化的思路是存储每一行的最小值和次小值。
+   已知最后一步的颜色往前求前一步最小花费时，不知道前一步的颜色，求出来前一步的最小花费可能发生颜色的碰撞,所以前一步的最小花费需要记录颜色**（序列+状态）**
 
-- 时间复杂度为`O(n * k)`的解法
+    ![](./imgs/子问题a.png)
 
-    ```c++
-    class Solution {
-    public:
-        /**
-         * @param costs: n x k cost matrix
-         * @return: an integer, the minimum cost to paint all houses
-         */
-        int minCostII(vector<vector<int>> &costs) 
-        {
-            // write your code here
-            if(costs.empty())
-            {
-                return 0;
+* 子问题
+
+   ![](./imgs/子问题1.png)
+
+* 状态
+
+  设f(i)(j)为油漆前**i**栋(0至i-1)，并且第**i-1**栋是**j种颜色**的**最小花费**
+
+#### 转移方程
+
+![](./imgs/转移方程2183.png)
+
+![](./imgs/转移方程2183b.png)
+
+#### 动态规划优化时间复杂度
+
+##### 之前的时间复杂度
+
+![](./imgs/时间复杂度.png)
+
+##### 优化问题 
+
+![](./imgs/优化问题.png)
+
+##### 解决方法
+
+![](./imgs/解决方法.png)
+
+![](./imgs/解决方法2.png)
+
+#### 初始条件和边界情况
+
+* **序列初始化十分方便 前0项就是没有项直接等于0**
+
+![](./imgs/边界情况a.png)
+
+
+
+#### 计算顺序（先按行再按列）
+
+用到的状态已经提前计算了出来
+
+计算第0行-----不同列-------------------》f(0)(0) f(0)(1) f(0)(k-1)
+
+计算第1行-----不同列-------------------》f(1)(0) f(1)(1) f(1)(k-1)
+
+。。。
+
+计算第N行-----不同列-------------------》f(N)(0) f(N)(1) f(N)(k-1)
+
+答案是min(f(N)(0) ,f(N)(1) ,f(N)(2))
+
+#### 代码
+
+```java
+class Solution {
+ public static int minCostII(int[][] costs) {
+        if (costs.length == 0 || costs[0].length == 0)
+            return 0;
+        
+        int m = costs.length + 1;
+        int n = costs[0].length;
+        
+        if (n==1){
+            if (m==2){
+                return costs[0][0];
+            }else{
+                return Integer.MAX_VALUE;
             }
-            int row = costs.size();
-            int col = costs[0].size();
-            vector<vector<int>> dp(row,vector<int>(col));
-            
-            dp = costs;
-            
-            int min1 = -1;
-            int min2 = -1;
-            
-            for(int i = 0;i < row;i++)
-            {
-                int last1 = min1; //下一行的最小值坐标
-                int last2 = min2; //下一行的次小值坐标
-                min1 = -1;
-                min2 = -1;  //记录当前行的最小值和次小值
-                for(int j = 0;j < col;j++)
-                {
-                    if(j != last1)
-                    {
-                        //当前坐标j并不是下一行的最小值
-                        dp[i][j] = dp[i][j] + (last1 < 0 ? 0 : dp[i - 1][last1]); 
-                    }
-                    else
-                    {
-                        //很不幸 j坐标就是下一行的最小值 只能加上下一行的次小值
-                        dp[i][j] = dp[i][j] + (last2 < 0 ? 0 : dp[i - 1][last2]);
-                    }
-                    
-                    //更新这一行的最小值和次小值
-                    if(min1 < 0 || dp[i][j] < dp[i][min1])
-                    {
-                        //dp[i][j]比当前行的最小值dp[i][min1]还小
-                        //那么dp[i][min1]主动让出当前最小值的位置
-                        min2 = min1;
-                        min1 = j;
-                    
-                    }
-                    else if(min2 < 0 || dp[i][j] < dp[i][min2])
-                    {
-                        //虽然dp[i][j]不比当前的最小值小
-                        //但是比当前的次小值dp[i][min2]小 
-                        //那么dp[i][min2]主动让出当前次小值
-                        min2 = j;
-                    }
+        }
+        //初始状态不用设 默认前0项为0
+        //前n个房子第j个颜色 包括0种颜色的最小花销
+        int dp[][] = new int[m][n];
+        for (int i = 1; i < m; i++) {
+            //前i-1个的最小花费和次小花费\
+            int min = Integer.MAX_VALUE;
+            int minindex = 0;
+            int secondmin = Integer.MAX_VALUE;
+            int secondminindex = 0;
+
+            for (int k = 0; k < n; k++) {
+                if (dp[i - 1][k] <= min) {
+                    secondmin = min;
+                    secondminindex = minindex;
+                    min = dp[i - 1][k];
+                    minindex = k;
+                }
+                if (dp[i - 1][k] > min && dp[i - 1][k] <= secondmin) {
+                    secondmin = dp[i - 1][k];
+                    secondminindex = k;
                 }
             }
-            
-            //return *min_element(dp[row - 1].begin(),dp[row - 1].end());
-            //另一种写法
-            return dp[row - 1][min1];
-        }
-    };
-    ```
 
-    
+
+            for (int j = 0; j < n; j++) {
+                if (j == minindex) {
+                    dp[i][j] = secondmin + costs[i - 1][j];
+                } else {
+                    dp[i][j] = min + costs[i - 1][j];
+                }
+            }
+        }
+        int result = Integer.MAX_VALUE;
+        for (int k = 0; k < n; k++) {
+            if (dp[m - 1][k] <= result) {
+                result = dp[m - 1][k];
+            }
+        }
+        return result;
+    }
+}
+```
 
 [392. House Robber](https://www.lintcode.com/problem/house-robber/description)
 
